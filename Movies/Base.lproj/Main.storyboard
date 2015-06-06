@@ -5,7 +5,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Popular Table View Controller-->
+        <!--Popular Movies on iTunes-->
         <scene sceneID="pgn-1R-fJe">
             <objects>
                 <tableViewController id="DBF-fe-KH5" customClass="PopularTableViewController" customModule="Movies" customModuleProvider="target" sceneMemberID="viewController">
@@ -21,7 +21,7 @@
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ff3-IY-5Qo">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.76078431369999999" green="0.015686274510000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -43,11 +43,30 @@
                             <outlet property="delegate" destination="DBF-fe-KH5" id="pV0-BU-ayo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="JzX-ku-KwT">
+                    <navigationItem key="navigationItem" title="Popular Movies on iTunes" id="JzX-ku-KwT">
                         <barButtonItem key="backBarButtonItem" title=" " id="Bcm-nZ-A8N"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="mCp-Zd-ltY" id="7bh-Mo-8dS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6yh-xf-x9b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="xIT-nE-9rr">
+                    <connections>
+                        <outlet property="delegate" destination="DBF-fe-KH5" id="ikL-JL-BhX"/>
+                        <outlet property="searchContentsController" destination="DBF-fe-KH5" id="kYn-Vv-jgI"/>
+                        <outlet property="searchResultsDataSource" destination="DBF-fe-KH5" id="IFm-es-5Nk"/>
+                        <outlet property="searchResultsDelegate" destination="DBF-fe-KH5" id="JAV-qe-5Yb"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="mCp-Zd-ltY">
+                    <connections>
+                        <outlet property="delegate" destination="DBF-fe-KH5" id="gWN-MJ-P25"/>
+                        <outlet property="searchContentsController" destination="DBF-fe-KH5" id="n4Q-Y2-YQV"/>
+                        <outlet property="searchResultsDataSource" destination="DBF-fe-KH5" id="paa-2H-UDK"/>
+                        <outlet property="searchResultsDelegate" destination="DBF-fe-KH5" id="ZrL-NV-8gG"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="2878" y="385"/>
         </scene>
@@ -126,6 +145,14 @@
                                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="11"/>
                                                 <color key="textColor" red="0.43529411764705883" green="0.44313725490196076" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                        <color key="value" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
                                         <constraints>
@@ -370,5 +397,5 @@
         <image name="star" width="25" height="25"/>
         <image name="user" width="25" height="25"/>
     </resources>
-    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>

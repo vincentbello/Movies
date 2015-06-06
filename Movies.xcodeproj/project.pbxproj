@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F004A1B1E637400E18850 /* MovieOperations.swift */; };
-		F99F004F1B1E827C00E18850 /* CustomUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F004E1B1E827C00E18850 /* CustomUIViewController.swift */; };
-		F99F00511B1E8BDF00E18850 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = F99F00501B1E8BDF00E18850 /* triangle.png */; };
 		F9A0D6641B1F75B700237720 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6631B1F75B700237720 /* Utils.swift */; };
 		F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */; };
 		F9A0D6691B1FE77100237720 /* FilterSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */; };
@@ -38,8 +36,6 @@
 
 /* Begin PBXFileReference section */
 		F99F004A1B1E637400E18850 /* MovieOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieOperations.swift; sourceTree = "<group>"; };
-		F99F004E1B1E827C00E18850 /* CustomUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomUIViewController.swift; path = ../CustomUIViewController.swift; sourceTree = "<group>"; };
-		F99F00501B1E8BDF00E18850 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = triangle.png; path = ../../../../Desktop/triangle.png; sourceTree = "<group>"; };
 		F9A0D6631B1F75B700237720 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSearchViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +74,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F95960451B20EB6B00F1D6E4 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4B2D01B1CF53000CE088E /* PopularTableViewController.swift */,
+				F9F4B2D61B1D3B7200CE088E /* MovieViewController.swift */,
+				F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */,
+				F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */,
+				F9A0D66C1B1FE88F00237720 /* MoreViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F95960481B20EBD100F1D6E4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		F95960491B20EC0500F1D6E4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4B2D21B1CF5EB00CE088E /* Movie.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		F9F4B29E1B1CE6F800CE088E = {
 			isa = PBXGroup;
 			children = (
@@ -99,22 +123,12 @@
 		F9F4B2A91B1CE6F800CE088E /* Movies */ = {
 			isa = PBXGroup;
 			children = (
-				F99F004E1B1E827C00E18850 /* CustomUIViewController.swift */,
-				F9F4B2CE1B1CF48E00CE088E /* GlobalConstants.swift */,
 				F9F4B2AC1B1CE6F800CE088E /* AppDelegate.swift */,
-				F9F4B2D01B1CF53000CE088E /* PopularTableViewController.swift */,
-				F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */,
-				F9A0D6631B1F75B700237720 /* Utils.swift */,
-				F9F4B2D61B1D3B7200CE088E /* MovieViewController.swift */,
-				F9F4B2D21B1CF5EB00CE088E /* Movie.swift */,
-				F99F004A1B1E637400E18850 /* MovieOperations.swift */,
 				F9F4B2B01B1CE6F800CE088E /* Main.storyboard */,
-				F9A0D66C1B1FE88F00237720 /* MoreViewController.swift */,
-				F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */,
-				F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */,
-				F9F4B2B31B1CE6F800CE088E /* Images.xcassets */,
 				F9F4B2B51B1CE6F800CE088E /* LaunchScreen.xib */,
-				F99F00501B1E8BDF00E18850 /* triangle.png */,
+				F95960491B20EC0500F1D6E4 /* Models */,
+				F95960481B20EBD100F1D6E4 /* Views */,
+				F95960451B20EB6B00F1D6E4 /* View Controllers */,
 				F9F4B2AA1B1CE6F800CE088E /* Supporting Files */,
 			);
 			path = Movies;
@@ -123,6 +137,10 @@
 		F9F4B2AA1B1CE6F800CE088E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F99F004A1B1E637400E18850 /* MovieOperations.swift */,
+				F9F4B2CE1B1CF48E00CE088E /* GlobalConstants.swift */,
+				F9A0D6631B1F75B700237720 /* Utils.swift */,
+				F9F4B2B31B1CE6F800CE088E /* Images.xcassets */,
 				F9F4B2AB1B1CE6F800CE088E /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -226,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9F4B2B21B1CE6F800CE088E /* Main.storyboard in Resources */,
-				F99F00511B1E8BDF00E18850 /* triangle.png in Resources */,
 				F9F4B2B71B1CE6F800CE088E /* LaunchScreen.xib in Resources */,
 				F9F4B2B41B1CE6F800CE088E /* Images.xcassets in Resources */,
 			);
@@ -249,7 +266,6 @@
 				F9F4B2D11B1CF53000CE088E /* PopularTableViewController.swift in Sources */,
 				F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */,
 				F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */,
-				F99F004F1B1E827C00E18850 /* CustomUIViewController.swift in Sources */,
 				F9F4B2D71B1D3B7200CE088E /* MovieViewController.swift in Sources */,
 				F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */,
 				F9A0D66B1B1FE78200237720 /* ProfileViewController.swift in Sources */,

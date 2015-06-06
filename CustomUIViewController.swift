@@ -14,13 +14,13 @@ class CustomUIViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
+        //self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
         //self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle")
+        //self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+        //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle")
         //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle")
 
-        self.navigationController?.navigationBar.translucent = true
+        //self.navigationController?.navigationBar.translucent = true
         
     }
 

@@ -6,24 +6,25 @@
 //  Copyright (c) 2015 Vincent Bello. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 var linkType = "itunes"
 
-let linkTypes = [("itunes", "iTunes Store"),
-    ("amazon", "Amazon Instant Video"),
-    ("netflix", "Netflix"),
-    ("youtube", "YouTube Movies"),
-    ("crackle", "Crackle"),
-    ("googleplay", "Google Play Store")]
+let linkTypes = [("itunes", "iTunes Store", "iTunes"),
+    ("amazon", "Amazon Instant Video", "Amazon"),
+    ("netflix", "Netflix", "Netflix"),
+    ("youtube", "YouTube Movies", "YouTube"),
+    ("crackle", "Crackle", "Crackle"),
+    ("googleplay", "Google Play Store", "Google Play")]
 
-class PopularTableViewController: UITableViewController, UITextFieldDelegate {
+class PopularTableViewController: UITableViewController, UISearchResultsUpdating {
     
     var movies = [Movie]()
     let pendingOperations = PendingOperations()
     
-    lazy var searchBar: UISearchBar = UISearchBar(frame: CGRectMake(0, 0, 300, 18))
-
+    var movieSearchController = UISearchController()
+    var searchedMovies = [Movie]()    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +38,9 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
         fetchMovieDetails()
         
         // Do any additional setup after loading the view.
+        
         self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
+        
         //self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
         self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle.png")
@@ -54,20 +57,49 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
         self.tabBarController?.tabBar.tintColor = GlobalConstants.DefaultColor
         
         
-        
         // bar button
         var linkTypeButton = UIBarButtonItem(image: UIImage(named: "\(linkType).png"), style: UIBarButtonItemStyle.Plain, target: self, action: "changeLinkType:")
         self.navigationItem.rightBarButtonItem = linkTypeButton
         
-
-        if let field = searchBar.valueForKey("searchField") as? UITextField {
-            field.backgroundColor = GlobalConstants.DefaultDarkerColor
-            field.textColor = UIColor.whiteColor()
-        }
-        searchBar.placeholder = "Find Movies"
-        var leftNavbarButton = UIBarButtonItem(customView: searchBar)
-        self.navigationItem.leftBarButtonItem = leftNavbarButton
         
+        
+        /* ---------------------- */
+        
+//        self.tableView.delegate = self
+//        self.tableView.dataSource = self
+//        searchBar.delegate = self
+        /* ---------------------- */
+        self.movieSearchController = ({
+            let controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self
+            controller.searchBar.searchBarStyle = .Default
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+            controller.searchBar.translucent = false
+            controller.searchBar.tintColor = UIColor.whiteColor()
+//            controller.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(10.0)], forState: .Normal)
+//            controller.searchBar.setSearchFieldBackgroundImage(Utils.getImageWithColor(GlobalConstants.DefaultDarkerColor, size: size), forState: .Normal)
+            
+            controller.searchBar.barTintColor = GlobalConstants.NavigationBarColor
+            controller.searchBar.translucent = true
+            self.tableView.tableHeaderView = controller.searchBar
+            return controller
+        })()
+        
+//        self.view.backgroundColor = GlobalConstants.DefaultColor
+        
+        
+//        var statusBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 20))
+//        statusBarView.backgroundColor = GlobalConstants.DefaultColor
+//        self.view.addSubview(statusBarView)
+        
+        
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +108,7 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func fetchMovieDetails() {
-        var dataSourceURL = NSURL(string: "http://api.readyto.watch/popular.php?type=\(linkType)&key=" + GlobalConstants.APIKey)
+        var dataSourceURL = NSURL(string: getFetchURL())
         let request = NSURLRequest(URL: dataSourceURL!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
             if data != nil {
@@ -87,12 +119,14 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
                 for mov in moviesArray {
                     let movDictionary = mov as! NSDictionary
                     var movie = Movie(JSONDictionary: movDictionary)
-                    if (self.movies.count > 0) {
-                        movie = movie.findMovieInArray(self.movies)
-                    }
+                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.searchedMovies))))
                     moviesArr.append(movie)
                 }
-                self.movies = moviesArr
+                if self.movieSearchController.active {
+                    self.searchedMovies = moviesArr
+                } else {
+                    self.movies = moviesArr
+                }
                 self.tableView.reloadData()
             }
             
@@ -101,6 +135,15 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
                 alert.show()
             }
             
+        }
+    }
+    
+    func getFetchURL() -> String {
+        if self.movieSearchController.active {
+            let query = self.movieSearchController.searchBar.text.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+            return "http://api.readyto.watch/search.php?q=\(query!)&key=\(GlobalConstants.APIKey)"
+        } else {
+            return "http://api.readyto.watch/popular.php?type=\(linkType)&key=\(GlobalConstants.APIKey)"
         }
     }
     
@@ -120,15 +163,16 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return movies.count
+        return self.movieSearchController.active ? searchedMovies.count : movies.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! MovieTableViewCell
+
+        let movie = self.movieSearchController.active ? searchedMovies[indexPath.row] : movies[indexPath.row]
         
-        let movie = movies[indexPath.row]
-        
-        cell.textLabel?.text = "\(movie.title) (\(movie.year))"
+        cell.textLabel?.attributedText = cell.getAttributedTitleAndYear(movie.title, year: movie.year)
         cell.detailTextLabel?.text = movie.genres
         
         cell.imageView?.image = movie.image
@@ -143,28 +187,9 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
         }
         
         // badge
-        var linkCountAccessory = UIView(frame: CGRectMake(0, 0, 30, 43))
+        cell.setBadgeAttributes(String(movie.linkCount), backgroundColor: Utils.colorFromLinkCount(movie.linkCount), caption: "link" + (movie.linkCount == 1 ? "" : "s"))
         
-        var linkCountBadge = UILabel()
-        linkCountBadge.text = String(movie.linkCount)
-        linkCountBadge.textColor = UIColor.whiteColor()
-        linkCountBadge.textAlignment = NSTextAlignment.Center
-        linkCountBadge.font = UIFont(name: linkCountBadge.font.fontName + "-Bold", size: 16)
-        linkCountBadge.layer.cornerRadius = 13
-        linkCountBadge.clipsToBounds = true
-        linkCountBadge.frame = CGRectMake(2, 2, 26, 26)
-        linkCountBadge.backgroundColor = Utils.colorFromLinkCount(movie.linkCount)
-        
-        var linkCountCaption = UILabel(frame: CGRectMake(0, 33, 30, 10))
-        linkCountCaption.text = "link" + (movie.linkCount == 1 ? "" : "s")
-        linkCountCaption.textColor = GlobalConstants.LightGrayColor
-        linkCountCaption.textAlignment = NSTextAlignment.Center
-        linkCountCaption.font = UIFont(name: linkCountCaption.font.fontName, size: 12)
-        
-        linkCountAccessory.addSubview(linkCountBadge)
-        linkCountAccessory.addSubview(linkCountCaption)
-        cell.accessoryView = linkCountAccessory
-        
+        cell.accessoryView = cell.getLinkCountLabel()
         
         return cell
     }
@@ -229,8 +254,11 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
-                self.pendingOperations.downloadsInProgress.removeValueForKey(indexPath)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                if self.pendingOperations.downloadsInProgress[indexPath] != nil {
+                    self.pendingOperations.downloadsInProgress.removeValueForKey(indexPath)
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                }
+                
             })
         }
         
@@ -238,18 +266,16 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
         pendingOperations.downloadQueue.addOperation(downloader)
     }
     
-    
-    
-    
-    
     func changeLinkType(sender: UIBarButtonItem!) {
         
         let optionMenu = UIAlertController(title: "Link type", message: "Choose a platform to display popular movies.", preferredStyle: .ActionSheet)
         for link in linkTypes {
-            let (linkShort, linkLong) = link
-            let linkAction = UIAlertAction(title: linkLong, style: .Default, handler: {(alert: UIAlertAction!) -> Void in
+            let (linkShort, linkLong, linkCaption) = link
+            let linkTitle = linkLong + (linkShort == linkType ? " ✓" : "")
+            let linkAction = UIAlertAction(title: linkTitle, style: .Default, handler: {(alert: UIAlertAction!) -> Void in
                 linkType = linkShort
                 sender.image = UIImage(named: "\(linkShort).png")
+                self.navigationItem.title = "Popular Movies on \(linkCaption)"
                 self.fetchMovieDetails()
             })
             optionMenu.addAction(linkAction)
@@ -258,11 +284,31 @@ class PopularTableViewController: UITableViewController, UITextFieldDelegate {
         optionMenu.addAction(cancelAction)
         
         self.presentViewController(optionMenu, animated: true, completion: nil)
-        
-        
-        
-        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if pendingOperations.downloadsInProgress.count > 0 {
+            pendingOperations.clearDownloads()
+        }
+        //searchedMovies.removeAll(keepCapacity: false)
+        
+        if count(searchController.searchBar.text) > 0 {
+            fetchMovieDetails()
+        } else {
+            searchedMovies.removeAll(keepCapacity: false)
+            self.tableView.reloadData()
+        }
+    }
+    
+    
     
     
     

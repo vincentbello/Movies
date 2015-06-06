@@ -110,7 +110,7 @@ class Movie: NSObject {
         } else {
             var h = Int(floor(Double(self.runtime/60)))
             var m : Int = self.runtime % 60
-            return "\(h)h " + ((m < 10) ? "0\(m)" : "\(m)")
+            return "\(h)h" + ((m < 10) ? "0\(m)" : "\(m)")
         }
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieViewController: CustomUIViewController {
+class MovieViewController: UIViewController {
     
     var currentMovie: Movie?
 
@@ -27,7 +27,18 @@ class MovieViewController: CustomUIViewController {
         // Do any additional setup after loading the view.
         backdropImage.image = currentMovie!.backdropImage()
         movieImage.image = currentMovie!.image
+        
+        
+        
         titleLabel.text = currentMovie!.title
+//        var attributedString = NSMutableAttributedString(string: currentMovie!.title)
+//        var attrs = [NSFontAttributeName : UIFont.systemFontOfSize(9.0)]
+//        var yearString = NSMutableAttributedString(string: String(currentMovie!.year), attributes: attrs)
+//        attributedString.appendAttributedString(yearString)
+//        titleLabel.attributedText = attributedString
+        
+        
+        
         yearLabel.text = "(" + String(currentMovie!.year) + ")"
         ratingLabel.text = currentMovie!.mpaa
         infoLabel.text = "\(currentMovie!.genRuntime()) - \(currentMovie!.genres) - \(currentMovie!.language)"
@@ -38,6 +49,7 @@ class MovieViewController: CustomUIViewController {
         synopsisLabel.sizeToFit()
         
         self.title = "\(currentMovie!.title) (\(currentMovie!.year))"
+        //synopsisLabel.tintColor =
     }
 
     override func didReceiveMemoryWarning() {

@@ -24,6 +24,10 @@ class PendingOperations {
         // can leave this out: probably would improve performance
         return queue
         }()
+    
+    func clearDownloads() {
+        self.downloadsInProgress.removeAll(keepCapacity: false)
+    }
 }
 
 class ImageDownloader: NSOperation {

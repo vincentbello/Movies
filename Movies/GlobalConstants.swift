@@ -20,6 +20,7 @@ struct GlobalConstants {
     
     static let DefaultColor = UIColor(red: 194/255, green: 4/255, blue: 39/255, alpha: 1.0)
     static let DefaultDarkerColor = UIColor(red: 128/255, green: 35/255, blue: 27/255, alpha: 1.0)
+    //static let LightGray
     static let NavigationBarColor = UIColor(red: 194/255, green: 4/255, blue: 39/255, alpha: 0.3)
     static let LightGrayColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1.0)
     
