@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Vincent Bello. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 var linkType = "itunes"
@@ -175,7 +174,8 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
         cell.textLabel?.attributedText = cell.getAttributedTitleAndYear(movie.title, year: movie.year)
         cell.detailTextLabel?.text = movie.genres
         
-        cell.imageView?.image = movie.image
+        //cell.imageView?.image = movie.image
+        UIView.transitionWithView(cell.imageView!, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { cell.imageView?.image = movie.image }, completion: nil)
         
         switch (movie.imageState) {
         case .Failed:
