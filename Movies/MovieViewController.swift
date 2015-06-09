@@ -9,48 +9,97 @@
 import UIKit
 
 class MovieViewController: UIViewController {
-    
-    var currentMovie: Movie?
 
+    // MARK: Properties
+    
     @IBOutlet weak var backdropImage: UIImageView!
     @IBOutlet weak var movieImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-
-    @IBOutlet weak var synopsisLabel: UILabel!
+    @IBOutlet weak var synopsisLabel: UITextView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    var currentMovie: Movie!
+    var test: Bool!
+    
+    // MARK: Factory Methods
+    
+//    class func forProduct(product: Product) -> DetailViewController {
+//        let storyboard = UIStoryboard(name: StoryboardConstants.storyboardName, bundle: nil)
+//        
+//        let viewController = storyboard.instantiateViewControllerWithIdentifier(StoryboardConstants.viewControllerIdentifier) as! DetailViewController
+//        
+//        viewController.product = product
+//        println(viewController)
+//        
+//        return viewController
+//    }
+    
+    
+    
+    
+    class func forMovie(movie: Movie) -> MovieViewController {
+        let storyboard = UIStoryboard(name: GlobalConstants.StoryboardName, bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("MovieViewController") as! MovieViewController
+        viewController.currentMovie = movie
+        viewController.test = true
+        
+        return viewController        
+    }
+    
+    // MARK: View Life Cycle
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+                
         // Do any additional setup after loading the view.
-        backdropImage.image = currentMovie!.backdropImage()
-        movieImage.image = currentMovie!.image
+        backdropImage.image = currentMovie.backdropImage()
+        movieImage.image = currentMovie.image
+        
+        titleLabel.text = currentMovie.title
+        yearLabel.text = String(currentMovie.year)
+        ratingLabel.text = currentMovie.mpaa
         
         
+        /*
+        let icon1 = NSTextAttachment()
+        icon1.image = UIImage(named: "clock.png")
+        let attr1 = NSAttributedString(attachment: icon1)
+        let icon2 = NSTextAttachment()
+        icon2.image = UIImage(named: "movie.png")
+        let attr2 = NSAttributedString(attachment: icon2)
+        let icon3 = NSTextAttachment()
+        icon3.image = UIImage(named: "bubble.png")
+        let attr3 = NSAttributedString(attachment: icon3)
         
-        titleLabel.text = currentMovie!.title
-//        var attributedString = NSMutableAttributedString(string: currentMovie!.title)
-//        var attrs = [NSFontAttributeName : UIFont.systemFontOfSize(9.0)]
-//        var yearString = NSMutableAttributedString(string: String(currentMovie!.year), attributes: attrs)
-//        attributedString.appendAttributedString(yearString)
-//        titleLabel.attributedText = attributedString
+        var infoLabelText = NSMutableAttributedString()
+        infoLabelText.appendAttributedString(attr1)
+        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.genRuntime()) - "))
+        infoLabelText.appendAttributedString(attr2)
+        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.genres) - "))
+        infoLabelText.appendAttributedString(attr3)
+        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.language)"))
+    
+        infoLabel.attributedText = infoLabelText
+        */
         
+        infoLabel.text = "\(currentMovie.genRuntime()) - \(currentMovie.genres) - \(currentMovie.language)"
         
+        let rectObj = movieImage.frame
+        let textViewOriginY = synopsisLabel.frame.origin.y
+        let imgOriginY = rectObj.origin.y + rectObj.height
+        if imgOriginY > textViewOriginY {
+            let exclusionRect = UIBezierPath(rect: CGRectMake(0, -5, rectObj.width, imgOriginY - textViewOriginY))
+            synopsisLabel.textContainer.exclusionPaths = [exclusionRect]
+        }
+        synopsisLabel.text = currentMovie.synopsis
         
-        yearLabel.text = "(" + String(currentMovie!.year) + ")"
-        ratingLabel.text = currentMovie!.mpaa
-        infoLabel.text = "\(currentMovie!.genRuntime()) - \(currentMovie!.genres) - \(currentMovie!.language)"
-        synopsisLabel.text = currentMovie!.synopsis
-        
-        //movieImage.layer.borderWidth = 2.0
-        //movieImage.layer.borderColor = UIColor.whiteColor().CGColor
-        synopsisLabel.sizeToFit()
-        
-        self.title = "\(currentMovie!.title) (\(currentMovie!.year))"
+        self.title = "\(currentMovie.title) (\(currentMovie.year))"
         //synopsisLabel.tintColor =
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

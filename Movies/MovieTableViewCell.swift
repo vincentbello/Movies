@@ -22,7 +22,6 @@ class MovieTableViewCell: UITableViewCell {
         super.init(coder: aDecoder)
     }
     
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -43,7 +42,7 @@ class MovieTableViewCell: UITableViewCell {
         linkCountBadge.clipsToBounds = true
         linkCountBadge.frame = CGRectMake(2, 2, 26, 26)
         
-        linkCountCaption.textColor = GlobalConstants.LightGrayColor
+        linkCountCaption.textColor = GlobalConstants.Colors.LightGrayColor
         linkCountCaption.textAlignment = NSTextAlignment.Center
         linkCountCaption.font = UIFont(name: linkCountCaption.font.fontName, size: 12)
     }
@@ -62,8 +61,8 @@ class MovieTableViewCell: UITableViewCell {
     
     func getAttributedTitleAndYear(title: String, year: Int) -> NSAttributedString {
         var attributedString = NSMutableAttributedString(string: title)
-        var attrs = [NSFontAttributeName: UIFont.systemFontOfSize(12), NSForegroundColorAttributeName: UIColor.grayColor()]
-        var yearString = NSMutableAttributedString(string: " (\(year))", attributes: attrs)
+        var attrs = [NSFontAttributeName: UIFont.systemFontOfSize(13), NSForegroundColorAttributeName: GlobalConstants.Colors.DarkGrayColor]
+        var yearString = NSMutableAttributedString(string: " \(year)", attributes: attrs)
         attributedString.appendAttributedString(yearString)
         return attributedString
     }

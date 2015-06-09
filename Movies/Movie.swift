@@ -58,11 +58,6 @@ class Movie: NSObject {
     init(JSONDictionary: NSDictionary) {
         super.init()
         
-        //var error : NSError?
-        //let JSONData = JSONString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        //let JSONDictionary = NSJSONSerialization.JSONObjectWithData(JSONData!, options: nil, error: &error) as! NSDictionary
-        
         // loop
         for (key, value) in JSONDictionary {
             let keyName = key as! String
@@ -94,7 +89,7 @@ class Movie: NSObject {
         
         var urlPath: String
         if count(self.backdrop) > 0 {
-            urlPath = "http://image.tmdb.org/t/p/w300\(self.backdrop)"
+            urlPath = "http://image.tmdb.org/t/p/w780\(self.backdrop)"
         } else {
             urlPath = GlobalConstants.DefaultBackdropImage;
         }

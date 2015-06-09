@@ -8,17 +8,65 @@
 
 import UIKit
 
-class MoreViewController: UIViewController {
+class MoreViewController: UITableViewController {
 
+    @IBOutlet weak var share: UITableViewCell!
+    
+    @IBOutlet weak var goToFacebook: UITableViewCell!
+    @IBOutlet weak var goToTwitter: UITableViewCell!
+    @IBOutlet weak var goToGooglePlus: UITableViewCell!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.barTintColor = GlobalConstants.Colors.NavigationBarColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedCell = self.tableView.cellForRowAtIndexPath(indexPath)
+        
+        
+        if selectedCell == share {
+            shareAction()
+        } else if selectedCell == goToFacebook {
+            UIApplication.tryURL([
+                "fb://profile/\(GlobalConstants.SocialMedia.FacebookID)", // App
+                "http://www.facebook.com/\(GlobalConstants.SocialMedia.FacebookID)"
+                ])
+        } else if selectedCell == goToTwitter {
+            UIApplication.tryURL([
+                "twitter:///user?screen_name=\(GlobalConstants.SocialMedia.TwitterHandle)", // App
+                "http://www.twitter.com/\(GlobalConstants.SocialMedia.TwitterHandle)"
+                ])
+        } else if selectedCell == goToGooglePlus {
+            UIApplication.tryURL([
+                "gplus://plus.google.com/\(GlobalConstants.SocialMedia.GooglePlusID)", // App
+                "http://plus.google.com/\(GlobalConstants.SocialMedia.GooglePlusID)"
+                ])
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        
+    }
+    
+    func shareAction() {
+        
+        let textToShare = "Let other people know about readyto.watch so they can use it too."
+        
+        if let websiteURL = NSURL(string: GlobalConstants.SocialMedia.WebsiteURL) {
+            let objectsToShare = [textToShare, websiteURL]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
     }
     
 
@@ -32,4 +80,18 @@ class MoreViewController: UIViewController {
     }
     */
 
+}
+
+
+extension UIApplication {
+    class func tryURL(urls: [String]) {
+        let application = UIApplication.sharedApplication()
+        for url in urls {
+            let urlObj = NSURL(string: url)!
+            if application.canOpenURL(urlObj) {
+                application.openURL(urlObj)
+                return
+            }
+        }
+    }
 }

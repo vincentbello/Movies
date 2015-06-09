@@ -17,88 +17,102 @@ let linkTypes = [("itunes", "iTunes Store", "iTunes"),
     ("crackle", "Crackle", "Crackle"),
     ("googleplay", "Google Play Store", "Google Play")]
 
-class PopularTableViewController: UITableViewController, UISearchResultsUpdating {
+class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating
+ {
+    
+    struct SearchControllerRestorableState {
+        var wasActive = false
+        var wasFirstResponder = false
+    }
+    
+    
+    // MARK: Properties
     
     var movies = [Movie]()
-    let pendingOperations = PendingOperations()
+//    let pendingOperations = PendingOperations()
     
-    var movieSearchController = UISearchController()
-    var searchedMovies = [Movie]()    
+//    var movieSearchController = UISearchController()
+//    var searchedMovies = [Movie]()  
+    
+    // Search controller to search movies.
+    var searchController: CustomSearchController!
+    
+    // Secondary search results table view.
+    var resultsTableController: ResultsTableController!
+    
+    var restoredState = SearchControllerRestorableState()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        //downloadMovies()
-        fetchMovieDetails()
         
         // Do any additional setup after loading the view.
         
-        self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
-        
-        //self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle.png")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "triangle.png")
-
-        self.navigationController?.navigationBar.translucent = true
-        
-        
-        self.tableView.separatorInset = UIEdgeInsetsZero
+//        self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
+//        
+//        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+//        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle.png")
+//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "triangle.png")
+//
+//        self.navigationController?.navigationBar.translucent = true
+//        
+//        self.tableView.separatorInset = UIEdgeInsetsZero
         
         if let item = self.tabBarController?.tabBar.items?[0] as? UITabBarItem {
             item.selectedImage = UIImage(named: "star_selected.png")
         }
-        self.tabBarController?.tabBar.tintColor = GlobalConstants.DefaultColor
+        self.tabBarController?.tabBar.tintColor = GlobalConstants.Colors.DefaultColor
         
         
         // bar button
         var linkTypeButton = UIBarButtonItem(image: UIImage(named: "\(linkType).png"), style: UIBarButtonItemStyle.Plain, target: self, action: "changeLinkType:")
         self.navigationItem.rightBarButtonItem = linkTypeButton
         
+        resultsTableController = ResultsTableController()
         
+        // We want to be the delegate for our filtered table so didSelectRowAtIndexPath(_:) is called for both tables.
+        resultsTableController.tableView.delegate = self
         
-        /* ---------------------- */
-        
-//        self.tableView.delegate = self
-//        self.tableView.dataSource = self
-//        searchBar.delegate = self
-        /* ---------------------- */
-        self.movieSearchController = ({
-            let controller = UISearchController(searchResultsController: nil)
+        searchController = ({
+            let controller = CustomSearchController(searchResultsController: self.resultsTableController)
             controller.searchResultsUpdater = self
-            controller.searchBar.searchBarStyle = .Default
-            controller.dimsBackgroundDuringPresentation = false
-            controller.searchBar.sizeToFit()
-            controller.searchBar.translucent = false
-            controller.searchBar.tintColor = UIColor.whiteColor()
-//            controller.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(10.0)], forState: .Normal)
-//            controller.searchBar.setSearchFieldBackgroundImage(Utils.getImageWithColor(GlobalConstants.DefaultDarkerColor, size: size), forState: .Normal)
-            
-            controller.searchBar.barTintColor = GlobalConstants.NavigationBarColor
-            controller.searchBar.translucent = true
+
             self.tableView.tableHeaderView = controller.searchBar
+            
+            controller.delegate = self
+            controller.searchBar.delegate = self    // So we can monitor text changes + others
+
             return controller
         })()
+
+        // Search is now just presenting a view controller. As such, normal view controller
+        // presentation semantics apply. Namely that presentation will walk up the view controller
+        // hierarchy until it finds the root view controller or one that defines a presentation context.
+        definesPresentationContext = true
         
-//        self.view.backgroundColor = GlobalConstants.DefaultColor
-        
-        
-//        var statusBarView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 20))
-//        statusBarView.backgroundColor = GlobalConstants.DefaultColor
-//        self.view.addSubview(statusBarView)
-        
-        
+        fetchMovieDetails()
+
         
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
+        
+        // Restore the search controller's active state.
+//        if restoredState.wasActive {
+//            searchController.active = restoredState.wasActive
+//            restoredState.wasActive = false
+//            
+//            if restoredState.wasFirstResponder {
+//                searchController.searchBar.becomeFirstResponder()
+//                restoredState.wasFirstResponder = false
+//            }
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -107,6 +121,7 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     func fetchMovieDetails() {
+        
         var dataSourceURL = NSURL(string: getFetchURL())
         let request = NSURLRequest(URL: dataSourceURL!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
@@ -118,15 +133,17 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
                 for mov in moviesArray {
                     let movDictionary = mov as! NSDictionary
                     var movie = Movie(JSONDictionary: movDictionary)
-                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.searchedMovies))))
+                    
+                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
                     moviesArr.append(movie)
                 }
-                if self.movieSearchController.active {
-                    self.searchedMovies = moviesArr
+                if self.searchController.active {
+                    self.resultsTableController.searchedMovies = moviesArr
+                    self.resultsTableController.tableView.reloadData()
                 } else {
                     self.movies = moviesArr
+                    self.tableView.reloadData()
                 }
-                self.tableView.reloadData()
             }
             
             if error != nil {
@@ -138,133 +155,14 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     func getFetchURL() -> String {
-        if self.movieSearchController.active {
-            let query = self.movieSearchController.searchBar.text.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        if self.searchController.active {
+            let query = self.searchController.searchBar.text.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
             return "http://api.readyto.watch/search.php?q=\(query!)&key=\(GlobalConstants.APIKey)"
         } else {
             return "http://api.readyto.watch/popular.php?type=\(linkType)&key=\(GlobalConstants.APIKey)"
         }
     }
     
-    
-    
-    
-    
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return self.movieSearchController.active ? searchedMovies.count : movies.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! MovieTableViewCell
-
-        let movie = self.movieSearchController.active ? searchedMovies[indexPath.row] : movies[indexPath.row]
-        
-        cell.textLabel?.attributedText = cell.getAttributedTitleAndYear(movie.title, year: movie.year)
-        cell.detailTextLabel?.text = movie.genres
-        
-        //cell.imageView?.image = movie.image
-        UIView.transitionWithView(cell.imageView!, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { cell.imageView?.image = movie.image }, completion: nil)
-        
-        switch (movie.imageState) {
-        case .Failed:
-            NSLog("Failed to load image for \(movie.title)")
-        case .New:
-            self.startOperationsForMovie(movie, indexPath: indexPath)
-        default:
-            break
-        }
-        
-        // badge
-        cell.setBadgeAttributes(String(movie.linkCount), backgroundColor: Utils.colorFromLinkCount(movie.linkCount), caption: "link" + (movie.linkCount == 1 ? "" : "s"))
-        
-        cell.accessoryView = cell.getLinkCountLabel()
-        
-        return cell
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return GlobalConstants.TableViewImageHeight + 20
-    }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-    
-    func startOperationsForMovie(movie: Movie, indexPath: NSIndexPath) {
-        switch(movie.imageState) {
-        case .New:
-            startDownloadForRecord(movie, indexPath: indexPath)
-        default:
-            NSLog("Do nothing")
-        }
-    }
-    
-    func startDownloadForRecord(movie: Movie, indexPath: NSIndexPath) {
-        if let downloadOperation = pendingOperations.downloadsInProgress[indexPath] {
-            return
-        }
-        
-        let downloader = ImageDownloader(movie: movie)
-        
-        downloader.completionBlock = {
-            if downloader.cancelled {
-                return
-            }
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.pendingOperations.downloadsInProgress[indexPath] != nil {
-                    self.pendingOperations.downloadsInProgress.removeValueForKey(indexPath)
-                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-                }
-                
-            })
-        }
-        
-        pendingOperations.downloadsInProgress[indexPath] = downloader
-        pendingOperations.downloadQueue.addOperation(downloader)
-    }
     
     func changeLinkType(sender: UIBarButtonItem!) {
         
@@ -287,28 +185,60 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     
-    
-    
-    
-    
-    
-    
+    // MARK: UISearchResultsUpdating
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        if pendingOperations.downloadsInProgress.count > 0 {
-            pendingOperations.clearDownloads()
-        }
-        //searchedMovies.removeAll(keepCapacity: false)
+        pendingOperations.clearDownloads()
         
         if count(searchController.searchBar.text) > 0 {
             fetchMovieDetails()
-        } else {
-            searchedMovies.removeAll(keepCapacity: false)
-            self.tableView.reloadData()
         }
+        
     }
     
     
+    // MARK: UITableViewDataSource
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Return the number of rows in the section.
+        return movies.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.TableViewCell.identifier, forIndexPath: indexPath) as! MovieTableViewCell
+        let movie = movies[indexPath.row]
+        
+        configureCell(cell, forMovie: movie, indexPath: indexPath)
+        
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return GlobalConstants.TableViewImageHeight + 20
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var selectedMovie: Movie
+        
+        // Check to see which table view cell was selected.
+        if tableView == self.tableView {
+            selectedMovie = movies[indexPath.row]
+        } else {
+            selectedMovie = resultsTableController.searchedMovies[indexPath.row]
+        }
+        
+        // Set up the detail view controller to show.
+        let detailViewController = MovieViewController.forMovie(selectedMovie)
+        
+        // Note: Should not be necessary but current iOS 8.0 bug requires it.
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    
+    // MARK: - UISearchBarDelegate
     
     
     
@@ -325,16 +255,16 @@ class PopularTableViewController: UITableViewController, UISearchResultsUpdating
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        // Get the new view controller using [segue destinationViewController].
-        var movieScene = segue.destinationViewController as! MovieViewController
-        
-        // Pass the selected object to the new view controller
-        if let indexPath = self.tableView.indexPathForSelectedRow() {
-            let selectedMovie = movies[indexPath.row]
-            movieScene.currentMovie = selectedMovie
-        }
-    }
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        
+//        // Get the new view controller using [segue destinationViewController].
+//        var movieScene = segue.destinationViewController as! MovieViewController
+//        
+//        // Pass the selected object to the new view controller
+//        if let indexPath = self.tableView.indexPathForSelectedRow() {
+//            let selectedMovie = movies[indexPath.row]
+//            movieScene.currentMovie = selectedMovie
+//        }
+//    }
 
 }
