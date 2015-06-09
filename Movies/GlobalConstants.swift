@@ -20,8 +20,30 @@ struct GlobalConstants {
     
     static let StoryboardName = "Main"
     
+    struct URLSchemes {
+        static let Amazon = "aiv://"
+        static let Netflix = "nflx://"
+        static let Facebook = "fb://"
+        static let Twitter = "twitter:///"
+        static let GooglePlus = "gplus://"
+        
+    }
+    
     struct Links {
         static let LinkArray = ["itunes", "amazon", "netflix", "youtube", "crackle", "google_play"]
+        static let LinkTypes = [("itunes", "iTunes Store", "iTunes"),
+                                ("amazon", "Amazon Instant Video", "Amazon"),
+                                ("netflix", "Netflix", "Netflix"),
+                                ("youtube", "YouTube Movies", "YouTube"),
+                                ("crackle", "Crackle", "Crackle"),
+                                ("googleplay", "Google Play Store", "Google Play")]
+        
+        static let ItunesPrefix = "https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewMovie?id="
+        
+        struct Cells {
+            static let NibName = "LinkTableViewCell"
+            static let LinkCellIdentifier = "LinkCell"
+        }
         
     }
     
@@ -31,6 +53,7 @@ struct GlobalConstants {
         static let DefaultDarkestColor = UIColor(red: 111/255, green: 4/255, blue: 22/255, alpha: 1.0)
         //static let LightGray
         static let NavigationBarColor = UIColor(red: 194/255 - 0.12, green: 4/255 - 0.12, blue: 39/255 - 0.12, alpha: 1.0)
+        static let VeryLightGrayColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1.0)
         static let LightGrayColor = UIColor(red: 204/255, green: 204/255, blue: 204/255, alpha: 1.0)
         static let DarkGrayColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
     }

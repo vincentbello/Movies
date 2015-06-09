@@ -37,17 +37,17 @@ class MoreViewController: UITableViewController {
             shareAction()
         } else if selectedCell == goToFacebook {
             UIApplication.tryURL([
-                "fb://profile/\(GlobalConstants.SocialMedia.FacebookID)", // App
+                "\(GlobalConstants.URLSchemes.Facebook)profile/\(GlobalConstants.SocialMedia.FacebookID)", // App
                 "http://www.facebook.com/\(GlobalConstants.SocialMedia.FacebookID)"
                 ])
         } else if selectedCell == goToTwitter {
             UIApplication.tryURL([
-                "twitter:///user?screen_name=\(GlobalConstants.SocialMedia.TwitterHandle)", // App
+                "\(GlobalConstants.URLSchemes.Twitter)user?screen_name=\(GlobalConstants.SocialMedia.TwitterHandle)", // App
                 "http://www.twitter.com/\(GlobalConstants.SocialMedia.TwitterHandle)"
                 ])
         } else if selectedCell == goToGooglePlus {
             UIApplication.tryURL([
-                "gplus://plus.google.com/\(GlobalConstants.SocialMedia.GooglePlusID)", // App
+                "\(GlobalConstants.URLSchemes.GooglePlus)plus.google.com/\(GlobalConstants.SocialMedia.GooglePlusID)", // App
                 "http://plus.google.com/\(GlobalConstants.SocialMedia.GooglePlusID)"
                 ])
         }

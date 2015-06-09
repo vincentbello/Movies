@@ -10,13 +10,6 @@ import UIKit
 
 var linkType = "itunes"
 
-let linkTypes = [("itunes", "iTunes Store", "iTunes"),
-    ("amazon", "Amazon Instant Video", "Amazon"),
-    ("netflix", "Netflix", "Netflix"),
-    ("youtube", "YouTube Movies", "YouTube"),
-    ("crackle", "Crackle", "Crackle"),
-    ("googleplay", "Google Play Store", "Google Play")]
-
 class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating
  {
     
@@ -167,7 +160,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     func changeLinkType(sender: UIBarButtonItem!) {
         
         let optionMenu = UIAlertController(title: "Link type", message: "Choose a platform to display popular movies.", preferredStyle: .ActionSheet)
-        for link in linkTypes {
+        for link in GlobalConstants.Links.LinkTypes {
             let (linkShort, linkLong, linkCaption) = link
             let linkTitle = linkLong + (linkShort == linkType ? " ✓" : "")
             let linkAction = UIAlertAction(title: linkTitle, style: .Default, handler: {(alert: UIAlertAction!) -> Void in

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F9812D011B250ECA00D5B8D7 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9812D001B250ECA00D5B8D7 /* CustomSearchController.swift */; };
 		F9812D031B251EE800D5B8D7 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */; };
 		F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F004A1B1E637400E18850 /* MovieOperations.swift */; };
 		F9A0D6641B1F75B700237720 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6631B1F75B700237720 /* Utils.swift */; };
@@ -16,6 +15,9 @@
 		F9A0D66B1B1FE78200237720 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */; };
 		F9A0D66D1B1FE88F00237720 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D66C1B1FE88F00237720 /* MoreViewController.swift */; };
 		F9CACB681B26506E0090FE0D /* LinkObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CACB671B26506E0090FE0D /* LinkObject.swift */; };
+		F9CACB6E1B26987F0090FE0D /* LinkTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9CACB6D1B26987F0090FE0D /* LinkTableViewCell.xib */; };
+		F9CACB701B26A6260090FE0D /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CACB6F1B26A6260090FE0D /* CustomSearchController.swift */; };
+		F9CACB721B26A6560090FE0D /* LinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CACB711B26A6560090FE0D /* LinksTableViewController.swift */; };
 		F9CF24231B23585F00FAE416 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */; };
 		F9CF24251B235DA600FAE416 /* ResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CF24241B235DA600FAE416 /* ResultsTableController.swift */; };
 		F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4B2AC1B1CE6F800CE088E /* AppDelegate.swift */; };
@@ -40,7 +42,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F9812D001B250ECA00D5B8D7 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomSearchController.swift; path = ../CustomSearchController.swift; sourceTree = "<group>"; };
 		F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		F99F004A1B1E637400E18850 /* MovieOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieOperations.swift; sourceTree = "<group>"; };
 		F9A0D6631B1F75B700237720 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -49,6 +50,9 @@
 		F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F9A0D66C1B1FE88F00237720 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F9CACB671B26506E0090FE0D /* LinkObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkObject.swift; sourceTree = "<group>"; };
+		F9CACB6D1B26987F0090FE0D /* LinkTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LinkTableViewCell.xib; sourceTree = "<group>"; };
+		F9CACB6F1B26A6260090FE0D /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
+		F9CACB711B26A6560090FE0D /* LinksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinksTableViewController.swift; sourceTree = "<group>"; };
 		F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		F9CF24241B235DA600FAE416 /* ResultsTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsTableController.swift; sourceTree = "<group>"; };
 		F9F4B2A71B1CE6F800CE088E /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,10 +91,11 @@
 		F95960451B20EB6B00F1D6E4 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F9CACB711B26A6560090FE0D /* LinksTableViewController.swift */,
+				F9F4B2D61B1D3B7200CE088E /* MovieViewController.swift */,
 				F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */,
 				F9F4B2D01B1CF53000CE088E /* PopularTableViewController.swift */,
 				F9CF24241B235DA600FAE416 /* ResultsTableController.swift */,
-				F9F4B2D61B1D3B7200CE088E /* MovieViewController.swift */,
 				F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */,
 				F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */,
 				F9A0D66C1B1FE88F00237720 /* MoreViewController.swift */,
@@ -102,7 +107,8 @@
 			isa = PBXGroup;
 			children = (
 				F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */,
-				F9812D001B250ECA00D5B8D7 /* CustomSearchController.swift */,
+				F9CACB6D1B26987F0090FE0D /* LinkTableViewCell.xib */,
+				F9CACB6F1B26A6260090FE0D /* CustomSearchController.swift */,
 				F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */,
 			);
 			name = Custom;
@@ -261,6 +267,7 @@
 				F9F4B2B21B1CE6F800CE088E /* Main.storyboard in Resources */,
 				F9F4B2B71B1CE6F800CE088E /* LaunchScreen.xib in Resources */,
 				F9F4B2B41B1CE6F800CE088E /* Images.xcassets in Resources */,
+				F9CACB6E1B26987F0090FE0D /* LinkTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +288,6 @@
 				F9F4B2D11B1CF53000CE088E /* PopularTableViewController.swift in Sources */,
 				F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */,
 				F9812D031B251EE800D5B8D7 /* CustomTabBarController.swift in Sources */,
-				F9812D011B250ECA00D5B8D7 /* CustomSearchController.swift in Sources */,
 				F9CF24251B235DA600FAE416 /* ResultsTableController.swift in Sources */,
 				F9CACB681B26506E0090FE0D /* LinkObject.swift in Sources */,
 				F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */,
@@ -289,9 +295,11 @@
 				F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */,
 				F9A0D66B1B1FE78200237720 /* ProfileViewController.swift in Sources */,
 				F9F4B2D31B1CF5EB00CE088E /* Movie.swift in Sources */,
+				F9CACB701B26A6260090FE0D /* CustomSearchController.swift in Sources */,
 				F9CF24231B23585F00FAE416 /* BaseTableViewController.swift in Sources */,
 				F9F4B2CF1B1CF48E00CE088E /* GlobalConstants.swift in Sources */,
 				F9A0D66D1B1FE88F00237720 /* MoreViewController.swift in Sources */,
+				F9CACB721B26A6560090FE0D /* LinksTableViewController.swift in Sources */,
 				F9A0D6691B1FE77100237720 /* FilterSearchViewController.swift in Sources */,
 				F9A0D6641B1F75B700237720 /* Utils.swift in Sources */,
 			);

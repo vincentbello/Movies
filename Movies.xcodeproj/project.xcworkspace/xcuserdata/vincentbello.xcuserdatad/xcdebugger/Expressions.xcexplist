@@ -3,6 +3,20 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, cellForRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ObjectiveC.UITableViewCell:LinksTableViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, didSelectRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ():LinksTableViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.linksContainer.frame.origin.x">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Movies.MovieViewController.viewWillAppear (Movies.MovieViewController)(Swift.Bool) -&gt; ():MovieViewController.swift">
          <PersistentStrings>
             <PersistentString

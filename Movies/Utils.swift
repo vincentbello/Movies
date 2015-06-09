@@ -23,18 +23,7 @@ class Utils {
             return UIColor.greenColor()
         }
     }
-    
-    static func changeSearchBarTextFieldBackgroundColor(searchBar: UISearchBar, color: UIColor) {
-        
 
-            
-//            if let textField = searchBar.subviews[index - 1] as? UITextField {
-//                println("changing text field BG color")
-//                textField.backgroundColor = color
-//            }
-            
-        
-    }
 
     
     
