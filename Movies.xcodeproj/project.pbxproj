@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F9812D031B251EE800D5B8D7 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */; };
+		F9890C0E1B361079007303FE /* RestAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9890C0D1B361079007303FE /* RestAPIManager.swift */; };
+		F9890C101B365727007303FE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9890C0F1B365727007303FE /* SwiftyJSON.swift */; };
 		F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F004A1B1E637400E18850 /* MovieOperations.swift */; };
 		F9A0D6641B1F75B700237720 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6631B1F75B700237720 /* Utils.swift */; };
 		F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */; };
@@ -43,6 +45,8 @@
 
 /* Begin PBXFileReference section */
 		F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		F9890C0D1B361079007303FE /* RestAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAPIManager.swift; sourceTree = "<group>"; };
+		F9890C0F1B365727007303FE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = "../../../../Downloads/SwiftyJSON-master/Source/SwiftyJSON.swift"; sourceTree = "<group>"; };
 		F99F004A1B1E637400E18850 /* MovieOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieOperations.swift; sourceTree = "<group>"; };
 		F9A0D6631B1F75B700237720 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
@@ -91,10 +95,10 @@
 		F95960451B20EB6B00F1D6E4 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F9F4B2D01B1CF53000CE088E /* PopularTableViewController.swift */,
 				F9CACB711B26A6560090FE0D /* LinksTableViewController.swift */,
 				F9F4B2D61B1D3B7200CE088E /* MovieViewController.swift */,
 				F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */,
-				F9F4B2D01B1CF53000CE088E /* PopularTableViewController.swift */,
 				F9CF24241B235DA600FAE416 /* ResultsTableController.swift */,
 				F9A0D6681B1FE77100237720 /* FilterSearchViewController.swift */,
 				F9A0D66A1B1FE78200237720 /* ProfileViewController.swift */,
@@ -117,6 +121,7 @@
 		F95960491B20EC0500F1D6E4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F9890C0D1B361079007303FE /* RestAPIManager.swift */,
 				F9CACB671B26506E0090FE0D /* LinkObject.swift */,
 				F9F4B2D21B1CF5EB00CE088E /* Movie.swift */,
 			);
@@ -158,6 +163,7 @@
 		F9F4B2AA1B1CE6F800CE088E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F9890C0F1B365727007303FE /* SwiftyJSON.swift */,
 				F99F004A1B1E637400E18850 /* MovieOperations.swift */,
 				F9F4B2CE1B1CF48E00CE088E /* GlobalConstants.swift */,
 				F9A0D6631B1F75B700237720 /* Utils.swift */,
@@ -292,9 +298,11 @@
 				F9CACB681B26506E0090FE0D /* LinkObject.swift in Sources */,
 				F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */,
 				F9F4B2D71B1D3B7200CE088E /* MovieViewController.swift in Sources */,
+				F9890C101B365727007303FE /* SwiftyJSON.swift in Sources */,
 				F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */,
 				F9A0D66B1B1FE78200237720 /* ProfileViewController.swift in Sources */,
 				F9F4B2D31B1CF5EB00CE088E /* Movie.swift in Sources */,
+				F9890C0E1B361079007303FE /* RestAPIManager.swift in Sources */,
 				F9CACB701B26A6260090FE0D /* CustomSearchController.swift in Sources */,
 				F9CF24231B23585F00FAE416 /* BaseTableViewController.swift in Sources */,
 				F9F4B2CF1B1CF48E00CE088E /* GlobalConstants.swift in Sources */,

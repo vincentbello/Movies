@@ -115,36 +115,76 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     func fetchMovieDetails() {
         
-        var dataSourceURL = NSURL(string: getFetchURL())
-        let request = NSURLRequest(URL: dataSourceURL!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-            if data != nil {
-                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
-                
-                let moviesArray = jsonResult["movies"] as! NSArray
+        let dataSourceURL = getFetchURL()
+        
+        RestAPIManager.sharedInstance.getPopularMovies(dataSourceURL) { json in
+            
+            if json != nil {
+                let results = json["movies"]
                 var moviesArr = [Movie]()
-                for mov in moviesArray {
-                    let movDictionary = mov as! NSDictionary
-                    var movie = Movie(JSONDictionary: movDictionary)
+                
+                for (index: String, subJson: JSON) in results {
                     
+                    var movie = Movie(json: subJson)
                     movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
                     moviesArr.append(movie)
                 }
+                
                 if self.searchController.active {
                     self.resultsTableController.searchedMovies = moviesArr
-                    self.resultsTableController.tableView.reloadData()
                 } else {
                     self.movies = moviesArr
-                    self.tableView.reloadData()
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    if self.searchController.active {
+                        self.resultsTableController.tableView.reloadData()
+                    } else {
+                        self.tableView.reloadData()
+                    }
+                })
+            } else {
+                println("error")
             }
             
-            if error != nil {
-                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-                alert.show()
-            }
-            
+
         }
+        
+        
+        
+        
+        
+        
+//        var dataSourceURL = NSURL(string: getFetchURL())
+//        let request = NSURLRequest(URL: dataSourceURL!)
+//        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
+//            if data != nil {
+//                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
+//                
+//                let moviesArray = jsonResult["movies"] as! NSArray
+//                var moviesArr = [Movie]()
+//                for mov in moviesArray {
+//                    let movDictionary = mov as! NSDictionary
+//                    var movie = Movie(JSONDictionary: movDictionary)
+//                    
+//                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
+//                    moviesArr.append(movie)
+//                }
+//                if self.searchController.active {
+//                    self.resultsTableController.searchedMovies = moviesArr
+//                    self.resultsTableController.tableView.reloadData()
+//                } else {
+//                    self.movies = moviesArr
+//                    self.tableView.reloadData()
+//                }
+//            }
+//            
+//            if error != nil {
+//                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
+//                alert.show()
+//            }
+//            
+//        }
     }
     
     func getFetchURL() -> String {

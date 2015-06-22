@@ -75,6 +75,26 @@ class Movie: NSObject {
         }
     }
     
+    init(json: JSON) {
+        super.init()
+        
+        for (keyName: String, subJson: JSON) in json {
+            let keyValue : AnyObject
+            if keyName == "linkCount" {
+                keyValue = subJson.int!
+            } else {
+                keyValue = subJson.string!
+            }
+                        
+            // if property exists
+            if self.respondsToSelector(NSSelectorFromString(keyName)) {
+                self.setValue(keyValue, forKey: keyName)
+            }
+        }
+    }
+    
+    
+    
     // return UIImage based on link
     func movieImageLink() -> String {
         if count(self.img_link) > 0 {
@@ -101,7 +121,7 @@ class Movie: NSObject {
     func genRuntime() -> String {
         
         if self.runtime < 60 {
-            return "\(self.runtime) min"
+            return self.runtime == 0 ? "" : "\(self.runtime) min"
         } else {
             var h = Int(floor(Double(self.runtime/60)))
             var m : Int = self.runtime % 60
@@ -116,5 +136,25 @@ class Movie: NSObject {
             }
         }
         return self
+    }
+    
+    func genInformation() -> String {
+        let runtime = self.genRuntime()
+        let genres = self.genres
+        let language = self.language
+        var str = ""
+        var elements = [String]()
+        
+        if count(runtime) > 0 {
+            elements.append(runtime)
+        }
+        if count(genres) > 0 {
+            elements.append(genres)
+        }
+        if count(language) > 0 {
+            elements.append(language)
+        }
+        
+        return " - ".join(elements)
     }
 }

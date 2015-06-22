@@ -9,6 +9,14 @@
          contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, didSelectRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ():LinksTableViewController.swift">
       </ContextState>
       <ContextState
+         contextName = "Movies.LinksTableViewController.viewDidLoad (Movies.LinksTableViewController)() -&gt; ():LinksTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView.superview">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
          <PersistentStrings>
             <PersistentString

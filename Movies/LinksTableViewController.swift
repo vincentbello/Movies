@@ -10,21 +10,67 @@ import UIKit
 
 class LinksTableViewController: UITableViewController {
 
+    var currentMovie: Movie!
+    
     var links = [LinkObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
         
-        let nib = UINib(nibName: GlobalConstants.Links.Cells.NibName, bundle: nil)
-
-        // Required if we want to use dequeueReusableCellWithIdentifier(_:)
-        tableView.registerNib(nib, forCellReuseIdentifier: GlobalConstants.Links.Cells.LinkCellIdentifier)
+        let frame = self.tableView.superview?.frame
         
-        self.tableView.separatorInset = UIEdgeInsetsZero
+        self.getLinks()
+        
 
+//        // Uncomment the following line to preserve selection between presentations
+//        // self.clearsSelectionOnViewWillAppear = false
+//        
+//        let nib = UINib(nibName: GlobalConstants.Links.Cells.NibName, bundle: nil)
+//
+//        // Required if we want to use dequeueReusableCellWithIdentifier(_:)
+//        tableView.registerNib(nib, forCellReuseIdentifier: GlobalConstants.Links.Cells.LinkCellIdentifier)
+//        
+//        self.tableView.separatorInset = UIEdgeInsetsZero
+
+    }
+    
+//    override func loadView() {
+//        self.tableView = UITableView()
+//    }
+    
+    func getLinks() {
+        
+        let dataFetchLink = "http://api.readyto.watch/links.php?id=\(currentMovie.id)&key=\(GlobalConstants.APIKey)"
+        
+        RestAPIManager.sharedInstance.getPopularMovies(dataFetchLink) { json in
+            
+            if json != nil {
+                let linksArray = json["links"]
+                
+                var linksArr = [LinkObject]()
+                for (index: String, subJson: JSON) in linksArray {
+                    println(index)
+                    var link = LinkObject(json: subJson)
+                    linksArr.append(link)
+                }
+                self.links = linksArr
+//                self.tableView.delegate = self.linksTableViewController
+                
+                dispatch_async(dispatch_get_main_queue(), {
+//                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
+                    
+                    self.tableView.reloadData()
+                    println("reloaded data: \(self.links.count) links")
+                    
+                })
+                
+                let frame = self.tableView.superview?.frame
+                
+            } else {
+                println("error loading links")
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +93,7 @@ class LinksTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let link = links[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Links.Cells.LinkCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
@@ -77,6 +124,7 @@ class LinksTableViewController: UITableViewController {
             cell.contentView.backgroundColor = GlobalConstants.Colors.VeryLightGrayColor
             cell.accessoryType = UITableViewCellAccessoryType.None
             cell.userInteractionEnabled = false
+            println("here")
         }
         
         return cell

@@ -37,6 +37,19 @@ class LinkObject: NSObject {
             }
         }
     }
+
+    init(json: JSON) {
+        super.init()
+        
+        for (keyName: String, subJson: JSON) in json {
+            let keyValue = subJson.string!
+            
+            // if property exists
+            if self.respondsToSelector(NSSelectorFromString(keyName)) {
+                self.setValue(keyValue, forKey: keyName)
+            }
+        }
+    }
     
     // Assumes that there is a link.
     func pricesString() -> String {

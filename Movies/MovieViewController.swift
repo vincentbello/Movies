@@ -12,9 +12,10 @@ class MovieViewController: UIViewController {
 
     // MARK: Properties
     
-    @IBOutlet weak var loadingView: UIView!
+//    @IBOutlet weak var loadingView: UIView!
+//    
+//    @IBOutlet weak var scrollView: UIScrollView!
     
-    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var backdropImage: UIImageView!
     @IBOutlet weak var taglineLabel: UILabel!
@@ -25,7 +26,9 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var synopsisLabel: UITextView!
     
-    @IBOutlet weak var linksContainer: UIView!
+    @IBOutlet weak var containerView: UIView!
+    
+//    @IBOutlet weak var linksContainer: UIView!
     
     var currentMovie: Movie!
     var linksTableViewController = LinksTableViewController()
@@ -51,47 +54,24 @@ class MovieViewController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.setUpViewElements()
-                self.loadingView.removeFromSuperview()
+//                self.loadingView.removeFromSuperview()
             }
-            
-            self.getLinks()
         }
+        
+        
+        containerView.layer.borderColor = UIColor.yellowColor().CGColor
+        containerView.layer.borderWidth = 3
     }
     
     func setUpViewElements() {
         
         backdropImage.image = currentMovie.backdropImage()
         movieImage.image = currentMovie.image
-        
         taglineLabel.text = count(currentMovie.tagline) > 0 ? "\"\(currentMovie.tagline)\"" : ""
-        
         titleLabel.text = currentMovie.title
         yearLabel.text = String(currentMovie.year)
         ratingLabel.text = currentMovie.mpaa
-        
-        /*
-        let icon1 = NSTextAttachment()
-        icon1.image = UIImage(named: "clock.png")
-        let attr1 = NSAttributedString(attachment: icon1)
-        let icon2 = NSTextAttachment()
-        icon2.image = UIImage(named: "movie.png")
-        let attr2 = NSAttributedString(attachment: icon2)
-        let icon3 = NSTextAttachment()
-        icon3.image = UIImage(named: "bubble.png")
-        let attr3 = NSAttributedString(attachment: icon3)
-        
-        var infoLabelText = NSMutableAttributedString()
-        infoLabelText.appendAttributedString(attr1)
-        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.genRuntime()) - "))
-        infoLabelText.appendAttributedString(attr2)
-        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.genres) - "))
-        infoLabelText.appendAttributedString(attr3)
-        infoLabelText.appendAttributedString(NSMutableAttributedString(string: " \(currentMovie.language)"))
-        
-        infoLabel.attributedText = infoLabelText
-        */
-        
-        infoLabel.text = "\(currentMovie.genRuntime()) - \(currentMovie.genres) - \(currentMovie.language)"
+        infoLabel.text = currentMovie.genInformation()
         
         let rectObj = movieImage.frame
         let textViewOriginY = synopsisLabel.frame.origin.y
@@ -117,51 +97,50 @@ class MovieViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func getLinks() {
         
-        let dataFetchLink = "http://api.readyto.watch/links.php?id=\(currentMovie.id)&key=\(GlobalConstants.APIKey)"
-        var dataSourceURL = NSURL(string: dataFetchLink)
-        let request = NSURLRequest(URL: dataSourceURL!)
         
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-            if data != nil {
-                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
-                
-                let linksArray = jsonResult["links"] as! NSArray
-                var linksArr = [LinkObject]()
-                for linkObj in linksArray {
-                    let linkDictionary = linkObj as! NSDictionary
-                    var link = LinkObject(JSONDictionary: linkDictionary)
-                    linksArr.append(link)
-                }
-                self.linksTableViewController.tableView.delegate = self.linksTableViewController
-                self.linksTableViewController.links = linksArr
-                self.linksTableViewController.tableView.reloadData()
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    let originalHeight = self.linksContainer.frame.size.height
-                    let tableSize = self.linksTableViewController.tableView.contentSize
-                    
-                    self.linksTableViewController.tableView.frame = CGRectMake(0, 0, tableSize.width, tableSize.height)
-                    self.linksContainer.frame.size = tableSize
-                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
-                    
-                    let oldHeight = self.scrollView.contentSize.height
-                    let addedHeight = oldHeight + tableSize.height - originalHeight
-                    
-                    self.scrollView.contentSize.height = addedHeight
-                    self.scrollView.frame.size.height = addedHeight
-                    self.scrollView.setNeedsDisplay()
-                }
-            }
-            
-            if error != nil {
-                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-                alert.show()
-            }
-            
-        }
+        
+        
+        
+        
+//        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
+//            if data != nil {
+//                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
+//                
+//                let linksArray = jsonResult["links"] as! NSArray
+//                var linksArr = [LinkObject]()
+//                for linkObj in linksArray {
+//                    let linkDictionary = linkObj as! NSDictionary
+//                    var link = LinkObject(JSONDictionary: linkDictionary)
+//                    linksArr.append(link)
+//                }
+//                self.linksTableViewController.tableView.delegate = self.linksTableViewController
+//                self.linksTableViewController.links = linksArr
+//                self.linksTableViewController.tableView.reloadData()
+//                
+//                dispatch_async(dispatch_get_main_queue()) {
+//                    let originalHeight = self.linksContainer.frame.size.height
+//                    let tableSize = self.linksTableViewController.tableView.contentSize
+//                    
+//                    self.linksTableViewController.tableView.frame = CGRectMake(0, 0, tableSize.width, tableSize.height)
+//                    self.linksContainer.frame.size = tableSize
+//                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
+//                    
+//                    let oldHeight = self.scrollView.contentSize.height
+//                    let addedHeight = oldHeight + tableSize.height - originalHeight
+//                    
+//                    self.scrollView.contentSize.height = addedHeight
+//                    self.scrollView.frame.size.height = addedHeight
+//                    self.scrollView.setNeedsDisplay()
+//                }
+//            }
+//            
+//            if error != nil {
+//                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
+//                alert.show()
+//            }
+//            
+//        }
         
         /*
         var dataSourceURL = NSURL(string: getFetchURL())
@@ -196,22 +175,16 @@ class MovieViewController: UIViewController {
         }
         */
         
-        
-        
-        
-        
-        
-    }
     
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let linksScene = segue.destinationViewController as? LinksTableViewController {
+            linksScene.currentMovie = currentMovie
+        }
+        
     }
-    */
 
 }
