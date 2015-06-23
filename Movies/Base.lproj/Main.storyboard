@@ -341,7 +341,7 @@
                                                 <rect key="frame" x="0.0" y="500" width="600" height="72"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.78973146024464835" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="310" id="8vK-eL-b4y"/>
+                                                    <constraint firstAttribute="height" constant="430" id="8vK-eL-b4y"/>
                                                     <constraint firstAttribute="height" constant="280" id="kTr-wx-L4X"/>
                                                 </constraints>
                                                 <variation key="default">

@@ -144,7 +144,7 @@ class LinksTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
+        return 80
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
