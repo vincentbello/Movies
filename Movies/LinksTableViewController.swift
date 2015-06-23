@@ -22,8 +22,6 @@ class LinksTableViewController: UITableViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        println("before loading data: \(self.tableView.contentSize)")
-        
         self.getLinks()
         
 
@@ -35,7 +33,7 @@ class LinksTableViewController: UITableViewController {
 //        // Required if we want to use dequeueReusableCellWithIdentifier(_:)
 //        tableView.registerNib(nib, forCellReuseIdentifier: GlobalConstants.Links.Cells.LinkCellIdentifier)
 //        
-//        self.tableView.separatorInset = UIEdgeInsetsZero
+        self.tableView.separatorInset = UIEdgeInsetsZero
 
     }
     
@@ -54,7 +52,6 @@ class LinksTableViewController: UITableViewController {
                 
                 var linksArr = [LinkObject]()
                 for (index: String, subJson: JSON) in linksArray {
-                    println(index)
                     var link = LinkObject(json: subJson)
                     linksArr.append(link)
                 }
@@ -65,13 +62,7 @@ class LinksTableViewController: UITableViewController {
 //                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
                     
                     self.tableView.reloadData()
-                    println("tableview frame before: \(self.tableView.frame)")
-                    self.tableView.frame = CGRectMake(0, 0, self.tableView.contentSize.width, self.tableView.frame.height)
-                    println("tableview frame after: \(self.tableView.frame)")
-                    println("reloaded data: \(self.links.count) links")
-                    
-                    println("after loading data: \(self.tableView.contentSize)")
-                    println("after loading data frame: \(self.tableView.frame)")
+                    //self.tableView.frame = CGRectMake(0, 0, self.tableView.contentSize.width, self.tableView.frame.height)
                     
                 })
                 
@@ -106,7 +97,7 @@ class LinksTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Links.Cells.LinkCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Links.Cells.LinkCellIdentifier, forIndexPath: indexPath) as! LinkTableViewCell
 
         let link = links[indexPath.row]
         
@@ -125,7 +116,8 @@ class LinksTableViewController: UITableViewController {
         // Configure the cell...
         if count(link.link) > 0 {
             cell.imageView?.image = UIImage(named: "\(linkShort)_color.png")
-            cell.detailTextLabel?.text = link.pricesString()
+            cell.detailTextLabel?.attributedText = link.pricesString()
+            println("\(linkShort): \(cell.textLabel?.frame)")
             cell.userInteractionEnabled = true
         } else {
             cell.imageView?.image = UIImage(named: "\(linkShort).png")
@@ -137,24 +129,29 @@ class LinksTableViewController: UITableViewController {
             cell.contentView.backgroundColor = GlobalConstants.Colors.VeryLightGrayColor
             cell.accessoryType = UITableViewCellAccessoryType.None
             cell.userInteractionEnabled = false
-            println("here")
         }
+        
+        cell.detailTextLabel?.sizeToFit()
         
         return cell
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80
+        return GlobalConstants.Links.Cells.Height
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 36
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.headerTitles[section].uppercaseString
+        return self.headerTitles[section]
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerLabel = UILabel(frame: CGRectMake(15, 0, self.tableView.frame.width, 20))
-        headerLabel.textColor = UIColor.lightGrayColor()
-        headerLabel.font = UIFont.systemFontOfSize(14)
+        let headerLabel = UILabel(frame: CGRectMake(15, 10, self.tableView.frame.width, 20))
+        headerLabel.textColor = GlobalConstants.Colors.DefaultColor
+        headerLabel.font = UIFont.systemFontOfSize(18)
         headerLabel.text = self.tableView(self.tableView, titleForHeaderInSection: section)
         
         let headerView = UIView()

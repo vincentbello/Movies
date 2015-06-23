@@ -52,44 +52,65 @@ class LinkObject: NSObject {
     }
     
     // Assumes that there is a link.
-    func pricesString() -> String {
+    func pricesString() -> NSMutableAttributedString {
+        
+        var attrStr = NSMutableAttributedString()
+//        var attributedString = NSMutableAttributedString(string: title)
+//        var attrs = [NSFontAttributeName: UIFont.systemFontOfSize(13), NSForegroundColorAttributeName: GlobalConstants.Colors.DarkGrayColor]
+//        var yearString = NSMutableAttributedString(string: " \(year)", attributes: attrs)
+//        attributedString.appendAttributedString(yearString)
+//        return attributedString
+        
+        
+        
         
         var str = ""
+        var boldAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(13), NSForegroundColorAttributeName: UIColor.blackColor()]
+        var hdAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(10), NSBackgroundColorAttributeName: GlobalConstants.Colors.DefaultColor, NSForegroundColorAttributeName: UIColor.whiteColor()]
         switch (self.type) {
         case "itunes", "amazon", "google_play":
             if (count(self.rent) == 0 && count(self.buy) == 0) {
-                str += "Follow link"
+                attrStr.appendString("Follow link")
             } else {
                 if (count(self.rent) > 0) {
                     var rentComponents = self.rent.componentsSeparatedByString("|")
                     if count(rentComponents[0]) > 0 {
-                        str += "Rent: $\(rentComponents[0])\n"
+                        attrStr.appendString("Rent: ")
+                        attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(rentComponents[0])\n", attributes: boldAttrs))
                         if count(rentComponents[1]) > 0 {
-                        str += "Rent[HD]: $\(rentComponents[1])\n"
+                            attrStr.appendString("Rent ")
+                            attrStr.appendAttributedString(NSMutableAttributedString(string: "HD", attributes: hdAttrs))
+                            attrStr.appendString(": ")
+                            attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(rentComponents[1])", attributes: boldAttrs))
+                            if count(self.buy) > 1 { attrStr.appendString("\n") }
                         }
                     }
                 }
                 if (count(self.buy) > 0) {
                     var buyComponents = self.buy.componentsSeparatedByString("|")
                     if count(buyComponents[0]) > 0 {
-                        str += "Buy: $\(buyComponents[0])\n"
+                        attrStr.appendString("Buy: ")
+                        attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(buyComponents[0])\n", attributes: boldAttrs))
                         if count(buyComponents[1]) > 0 {
-                            str += "Buy[HD]: $\(buyComponents[1])\n"
+                            attrStr.appendString("Buy ")
+                            attrStr.appendAttributedString(NSMutableAttributedString(string: "HD", attributes: hdAttrs))
+                            attrStr.appendString(": ")
+                            attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(buyComponents[1])", attributes: boldAttrs))
                         }
                     }
                 }
             }
         case "netflix":
-            str += "Streaming\n(Subscription)"
+            attrStr.appendString("Streaming\n(Subscription)")
         case "crackle":
-            str += "Streaming\n(Ads)"
+            attrStr.appendString("Streaming\n(Ads)")
         case "youtube":
-            str += "Follow link"
+            attrStr.appendString("Follow link")
         default:
             println("weird type: \(self.type)")
             break
         }
-        return str
+        return attrStr
     }
     
     // Assumes that there is a link. Will return two links, one that is app specific and one that will open on Safari otherwise.

@@ -43,6 +43,8 @@ struct GlobalConstants {
         struct Cells {
             static let NibName = "LinkTableViewCell"
             static let LinkCellIdentifier = "LinkCell"
+            
+            static let Height = CGFloat(80)
         }
         
     }

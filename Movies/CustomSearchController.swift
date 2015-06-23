@@ -38,17 +38,3 @@ class CustomSearchController: UISearchController {
     }
 
 }
-
-extension UISearchBar {
-    
-    var textField: UITextField? {
-        for parent in subviews as! [UIView] {
-            for subview in parent.subviews as! [UIView] {
-                if let textField = subview as? UITextField {
-                    return textField
-                }
-            }
-        }
-        return nil
-    }
-}

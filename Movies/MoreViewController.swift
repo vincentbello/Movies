@@ -82,16 +82,3 @@ class MoreViewController: UITableViewController {
 
 }
 
-
-extension UIApplication {
-    class func tryURL(urls: [String]) {
-        let application = UIApplication.sharedApplication()
-        for url in urls {
-            let urlObj = NSURL(string: url)!
-            if application.canOpenURL(urlObj) {
-                application.openURL(urlObj)
-                return
-            }
-        }
-    }
-}

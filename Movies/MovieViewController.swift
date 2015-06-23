@@ -28,6 +28,11 @@ class MovieViewController: UIViewController {
     
     @IBOutlet weak var containerView: UIView!
     
+
+    @IBOutlet weak var contentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var informationViewHeightConstraint: NSLayoutConstraint!
+    
 //    @IBOutlet weak var linksContainer: UIView!
     
     var currentMovie: Movie!
@@ -81,12 +86,32 @@ class MovieViewController: UIViewController {
         
         self.title = "\(currentMovie.title) (\(currentMovie.year))"
         
+        //self.containerView.frame.size.height = 430
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
                 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        let containerHeight = CGFloat(530)
+        let informationViewHeight = max(synopsisLabel.maxYinParentFrame(), movieImage.maxYinParentFrame())
+        let contentViewHeight = backdropImage.frame.height + informationViewHeight + containerHeight
+        
+        self.informationViewHeightConstraint.constant = informationViewHeight
+        self.view.layoutIfNeeded()
+        
+        self.containerViewHeightConstraint.constant = containerHeight
+        self.view.layoutIfNeeded()
+        
+        self.contentViewHeightConstraint.constant = contentViewHeight
+        self.view.layoutIfNeeded()
+        
+        
     }
     
     
