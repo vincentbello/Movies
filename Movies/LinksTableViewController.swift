@@ -14,10 +14,15 @@ class LinksTableViewController: UITableViewController {
     
     var links = [LinkObject]()
     
+    var headerTitles = ["Links"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let frame = self.tableView.superview?.frame
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
+        println("before loading data: \(self.tableView.contentSize)")
         
         self.getLinks()
         
@@ -60,7 +65,13 @@ class LinksTableViewController: UITableViewController {
 //                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
                     
                     self.tableView.reloadData()
+                    println("tableview frame before: \(self.tableView.frame)")
+                    self.tableView.frame = CGRectMake(0, 0, self.tableView.contentSize.width, self.tableView.frame.height)
+                    println("tableview frame after: \(self.tableView.frame)")
                     println("reloaded data: \(self.links.count) links")
+                    
+                    println("after loading data: \(self.tableView.contentSize)")
+                    println("after loading data frame: \(self.tableView.frame)")
                     
                 })
                 
@@ -89,14 +100,16 @@ class LinksTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return GlobalConstants.Links.LinkArray.count
+        //return self.links.count
+        return self.links.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let link = links[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Links.Cells.LinkCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
+        let link = links[indexPath.row]
+        
         var (linkShort, linkLong, linkCaption) = GlobalConstants.Links.LinkTypes[5]
         
         for linkType in GlobalConstants.Links.LinkTypes {
@@ -131,7 +144,25 @@ class LinksTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80
+        return 60
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return self.headerTitles[section].uppercaseString
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerLabel = UILabel(frame: CGRectMake(15, 0, self.tableView.frame.width, 20))
+        headerLabel.textColor = UIColor.lightGrayColor()
+        headerLabel.font = UIFont.systemFontOfSize(14)
+        headerLabel.text = self.tableView(self.tableView, titleForHeaderInSection: section)
+        
+        let headerView = UIView()
+        headerView.addSubview(headerLabel)
+        headerView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        
+        return headerView
+        
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

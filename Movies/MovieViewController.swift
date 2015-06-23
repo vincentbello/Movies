@@ -58,9 +58,6 @@ class MovieViewController: UIViewController {
             }
         }
         
-        
-        containerView.layer.borderColor = UIColor.yellowColor().CGColor
-        containerView.layer.borderWidth = 3
     }
     
     func setUpViewElements() {
@@ -83,6 +80,7 @@ class MovieViewController: UIViewController {
         synopsisLabel.text = currentMovie.synopsis
         
         self.title = "\(currentMovie.title) (\(currentMovie.year))"
+        
     }
     
     override func viewWillAppear(animated: Bool) {
