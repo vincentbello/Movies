@@ -19,7 +19,7 @@ class BaseTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Required if we want to use dequeueReusableCellWithIdentifier(_:)
-        tableView.registerClass(MovieTableViewCell.self, forCellReuseIdentifier: GlobalConstants.TableViewCell.identifier)
+        tableView.registerClass(MovieTableViewCell.self, forCellReuseIdentifier: GlobalConstants.Identifiers.Base)
         
         // Styling
         self.navigationController?.navigationBar.barTintColor = GlobalConstants.Colors.NavigationBarColor

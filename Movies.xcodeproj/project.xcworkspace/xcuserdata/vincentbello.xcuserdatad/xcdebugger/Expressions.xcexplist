@@ -6,25 +6,6 @@
          contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, cellForRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ObjectiveC.UITableViewCell:LinksTableViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "Movies.LinksTableViewController.viewDidLoad (Movies.LinksTableViewController)() -&gt; ():LinksTableViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.tableView.superview">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, didSelectRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ():LinksTableViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.linksContainer.frame.origin.x">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "Movies.MovieViewController.viewWillAppear (Movies.MovieViewController)(Swift.Bool) -&gt; ():MovieViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -32,6 +13,14 @@
             </PersistentString>
             <PersistentString
                value = "synopsisLabel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Movies.LinksTableViewController.viewDidLoad (Movies.LinksTableViewController)() -&gt; ():LinksTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView.superview">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -45,6 +34,25 @@
                value = "synopsisLabel.frame">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Movies.LinksTableViewController.collectionView (Movies.LinksTableViewController)(ObjectiveC.UICollectionView, cellForItemAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ObjectiveC.UICollectionViewCell:LinksTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.item">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.linksContainer.frame.origin.x">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, didSelectRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ():LinksTableViewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

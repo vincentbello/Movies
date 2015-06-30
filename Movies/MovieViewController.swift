@@ -75,11 +75,16 @@ class MovieViewController: UIViewController {
         ratingLabel.text = currentMovie.mpaa
         infoLabel.text = currentMovie.genInformation()
         
+        movieImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
+        backdropImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
+        
+        titleLabel.preferredMaxLayoutWidth = (titleLabel.superview?.frame.width)! - movieImage.frame.width - 20
+        
         let rectObj = movieImage.frame
         let textViewOriginY = synopsisLabel.frame.origin.y
         let imgOriginY = rectObj.origin.y + rectObj.height
         if imgOriginY > textViewOriginY {
-            let exclusionRect = UIBezierPath(rect: CGRectMake(5, -5, rectObj.width, imgOriginY - textViewOriginY))
+            let exclusionRect = UIBezierPath(rect: CGRectMake(5, 0, rectObj.width, imgOriginY - textViewOriginY))
             synopsisLabel.textContainer.exclusionPaths = [exclusionRect]
         }
         synopsisLabel.text = currentMovie.synopsis
@@ -87,6 +92,7 @@ class MovieViewController: UIViewController {
         self.title = "\(currentMovie.title) (\(currentMovie.year))"
         
         //self.containerView.frame.size.height = 430
+        
         
     }
     
@@ -98,7 +104,7 @@ class MovieViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         
-        let containerHeight = CGFloat(530)
+        let containerHeight = CGFloat(1000)
         let informationViewHeight = max(synopsisLabel.maxYinParentFrame(), movieImage.maxYinParentFrame())
         let contentViewHeight = backdropImage.frame.height + informationViewHeight + containerHeight
         
@@ -110,7 +116,7 @@ class MovieViewController: UIViewController {
         
         self.contentViewHeightConstraint.constant = contentViewHeight
         self.view.layoutIfNeeded()
-        
+
         
     }
     
@@ -120,8 +126,19 @@ class MovieViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
+    func goToImageView(sender: UITapGestureRecognizer) {
         
+        println("clicked")
         
+        // Set up the detail view controller to show.
+        let imageViewController = ImageViewController.forMovie(currentMovie)
+        imageViewController.isMovieImage = (sender.view == self.movieImage)
+        
+        self.presentViewController(imageViewController, animated: true, completion: nil)
+        
+    }
         
         
         

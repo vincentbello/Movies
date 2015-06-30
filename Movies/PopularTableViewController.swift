@@ -239,7 +239,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.TableViewCell.identifier, forIndexPath: indexPath) as! MovieTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Base, forIndexPath: indexPath) as! MovieTableViewCell
         let movie = movies[indexPath.row]
         
         configureCell(cell, forMovie: movie, indexPath: indexPath)

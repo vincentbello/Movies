@@ -54,3 +54,46 @@ extension NSMutableAttributedString {
     
 }
 
+
+extension UILabel {
+    
+    var substituteFontName : String {
+        get { return self.font.fontName }
+        set {
+            if self.font.fontName.rangeOfString("Heavy") == nil {
+                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            }
+        }
+    }
+    
+    var substituteFontNameBold : String {
+        get { return self.font.fontName }
+        set {
+            if self.font.fontName.rangeOfString("Heavy") != nil {
+                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            }
+        }
+    }
+}
+
+extension UITextField {
+    
+    var substituteFontName : String {
+        get { return self.font.fontName }
+        set {
+            if self.font.fontName.rangeOfString("Heavy") == nil {
+                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            }
+        }
+    }
+    
+    var substituteFontNameBold : String {
+        get { return self.font.fontName }
+        set {
+            if self.font.fontName.rangeOfString("Heavy") != nil {
+                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            }
+        }
+    }
+}
+

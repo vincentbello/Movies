@@ -27,11 +27,8 @@ class LinkTableViewCell: UITableViewCell {
         //        self.detailTextLabel?.layer.borderColor = UIColor.blueColor().CGColor
         //        self.detailTextLabel?.layer.borderWidth = 2.0
         
-        println("before: \(self.textLabel?.frame)")
         let textLabelHeight = self.textLabel?.frame.height
-        self.textLabel?.frame.origin.y = (GlobalConstants.Links.Cells.Height - textLabelHeight!) / 2
-        
-        println(self.textLabel?.frame)
+        self.textLabel?.frame.origin.y = (GlobalConstants.Links.CellHeight - textLabelHeight!) / 2
     }
 
 }

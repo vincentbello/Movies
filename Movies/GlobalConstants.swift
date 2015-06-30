@@ -40,12 +40,7 @@ struct GlobalConstants {
         
         static let ItunesPrefix = "https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewMovie?id="
         
-        struct Cells {
-            static let NibName = "LinkTableViewCell"
-            static let LinkCellIdentifier = "LinkCell"
-            
-            static let Height = CGFloat(80)
-        }
+        static let CellHeight = CGFloat(80)
         
     }
     
@@ -60,12 +55,24 @@ struct GlobalConstants {
         static let DarkGrayColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
     }
     
-    struct TableViewCell {
-        static let identifier = "Cell"        
+    struct Fonts {
+        struct Main {
+            static let Regular = "Avenir-Book"
+            static let Bold = "Avenir-Heavy"
+        }
+        
     }
-    
+        
     struct TabBar {
         static let Height: CGFloat = 45.0
+    }
+    
+    struct Identifiers {
+        static let Base = "Cell"
+        static let Link = "LinkCell"
+        static let CollectionContainer = "CollectionContainer"
+        static let CollectionCell = "CollectionCell"
+        
     }
     
     struct SocialMedia {

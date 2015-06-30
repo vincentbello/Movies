@@ -65,8 +65,10 @@ class LinkObject: NSObject {
         
         
         var str = ""
-        var boldAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(13), NSForegroundColorAttributeName: UIColor.blackColor()]
-        var hdAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(10), NSBackgroundColorAttributeName: GlobalConstants.Colors.DefaultColor, NSForegroundColorAttributeName: UIColor.whiteColor()]
+        //var boldAttrs = [NSFontAttributeName: UIFont(name: GlobalConstants.Fonts.Main.Bold, size: 13), NSForegroundColorAttributeName: UIColor.blackColor()]
+        var boldAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(13)]
+        //var testAttrs = [NSFontAttributeName: UIFont(name: GlobalConstants.Fonts.Main.Bold, size: 16.0)]
+        var hdAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(9), NSBackgroundColorAttributeName: GlobalConstants.Colors.DefaultColor, NSForegroundColorAttributeName: UIColor.whiteColor()]
         switch (self.type) {
         case "itunes", "amazon", "google_play":
             if (count(self.rent) == 0 && count(self.buy) == 0) {

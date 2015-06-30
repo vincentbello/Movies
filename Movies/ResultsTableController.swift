@@ -28,7 +28,7 @@ class ResultsTableController: BaseTableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.TableViewCell.identifier) as! MovieTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Base) as! MovieTableViewCell
         
         let movie = searchedMovies[indexPath.row]
         configureCell(cell, forMovie: movie, indexPath: indexPath)

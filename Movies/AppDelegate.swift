@@ -17,6 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Change fonts
+        UILabel.appearance().substituteFontName = GlobalConstants.Fonts.Main.Regular
+        UILabel.appearance().substituteFontNameBold = GlobalConstants.Fonts.Main.Bold
+        
+        UITextField.appearance().substituteFontName = GlobalConstants.Fonts.Main.Regular
+        UITextField.appearance().substituteFontNameBold = GlobalConstants.Fonts.Main.Bold
+
+        
         return true
     }
 
