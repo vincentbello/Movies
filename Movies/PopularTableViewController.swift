@@ -39,21 +39,6 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Do any additional setup after loading the view.
-        
-//        self.navigationController?.navigationBar.barTintColor = GlobalConstants.NavigationBarColor
-//        
-//        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-//        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "triangle.png")
-//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "triangle.png")
-//
-//        self.navigationController?.navigationBar.translucent = true
-//        
-//        self.tableView.separatorInset = UIEdgeInsetsZero
         
         if let item = self.tabBarController?.tabBar.items?[0] as? UITabBarItem {
             item.selectedImage = UIImage(named: "star_selected.png")
@@ -87,6 +72,8 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         // hierarchy until it finds the root view controller or one that defines a presentation context.
         definesPresentationContext = true
         
+        self.tableView.setUpLoadingIndicator(offsetY: 80)
+        
         fetchMovieDetails()
 
         
@@ -94,30 +81,35 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        //self.tableView.reloadData()
-        
-        // Restore the search controller's active state.
-//        if restoredState.wasActive {
-//            searchController.active = restoredState.wasActive
-//            restoredState.wasActive = false
-//            
-//            if restoredState.wasFirstResponder {
-//                searchController.searchBar.becomeFirstResponder()
-//                restoredState.wasFirstResponder = false
-//            }
-//        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+//    
+//    func setUpLoadingIndicator() {
+//        
+//        let tblViewFooter = UIView(frame: CGRectZero)
+//        
+//        let loadingLabel = UILabel()
+//        loadingLabel.text = "Loading popular movies..."
+//        loadingLabel.textColor = UIColor.darkTextColor()
+//        loadingLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Bold, size: 15.0)
+//        
+//        tblViewFooter.addSubview(loadingLabel)
+//        
+//        loadingLabel.sizeToFit()
+//        
+//        let offsetY = (self.navigationController?.navigationBar)!.frame.height + self.searchController.searchBar.frame.height
+//
+//        loadingLabel.center = CGPointMake(self.tableView.center.x, self.tableView.center.y - offsetY)
+//        
+//        self.tableView.userInteractionEnabled = false
+//        self.tableView.tableFooterView = tblViewFooter
+//        
+//    }
     
     func fetchMovieDetails() {
         
         let dataSourceURL = getFetchURL()
         
-        RestAPIManager.sharedInstance.getPopularMovies(dataSourceURL) { json in
+        RestAPIManager.sharedInstance.getRequest(dataSourceURL) { json in
             
             if json != nil {
                 let results = json["movies"]
@@ -137,6 +129,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), {
+                    self.tableView.userInteractionEnabled = true
                     if self.searchController.active {
                         self.resultsTableController.tableView.reloadData()
                     } else {
@@ -149,42 +142,6 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
             
 
         }
-        
-        
-        
-        
-        
-        
-//        var dataSourceURL = NSURL(string: getFetchURL())
-//        let request = NSURLRequest(URL: dataSourceURL!)
-//        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-//            if data != nil {
-//                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
-//                
-//                let moviesArray = jsonResult["movies"] as! NSArray
-//                var moviesArr = [Movie]()
-//                for mov in moviesArray {
-//                    let movDictionary = mov as! NSDictionary
-//                    var movie = Movie(JSONDictionary: movDictionary)
-//                    
-//                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
-//                    moviesArr.append(movie)
-//                }
-//                if self.searchController.active {
-//                    self.resultsTableController.searchedMovies = moviesArr
-//                    self.resultsTableController.tableView.reloadData()
-//                } else {
-//                    self.movies = moviesArr
-//                    self.tableView.reloadData()
-//                }
-//            }
-//            
-//            if error != nil {
-//                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-//                alert.show()
-//            }
-//            
-//        }
     }
     
     func getFetchURL() -> String {

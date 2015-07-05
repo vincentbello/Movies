@@ -30,7 +30,7 @@ class PendingOperations {
     }
 }
 
-class ImageDownloader: NSOperation {
+class MovieImageDownloader: NSOperation {
     
     let movie: Movie
     
@@ -58,6 +58,41 @@ class ImageDownloader: NSOperation {
         }
     }
 }
+
+class ActorImageDownloader: NSOperation {
+    
+    let actor: Actor
+    
+    init(actor: Actor) {
+        self.actor = actor
+    }
+    
+    override func main() {
+        
+        if self.cancelled {
+            return
+        }
+        let url = NSURL(string: self.actor.actorImageLink())
+        let imageData = NSData(contentsOfURL: url!)
+        if self.cancelled {
+            return
+        }
+        
+        if imageData?.length > 0 {
+            let image = UIImage(data: imageData!)
+            self.actor.image = image
+            self.actor.imageState = .Downloaded
+        } else {
+            self.actor.imageState = .Failed
+            self.actor.image = UIImage(named: "Failed")
+        }
+    }
+    
+    
+    
+}
+
+
 
 
 

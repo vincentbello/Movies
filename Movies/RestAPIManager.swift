@@ -16,14 +16,12 @@ class RestAPIManager: NSObject {
     
     let baseURL = "http://api.readyto.watch/"
     
-    func getPopularMovies(dataSourceURL: String, onCompletion: (JSON) -> Void) {
+    func getRequest(dataSourceURL: String, onCompletion: (JSON) -> Void) {
         let route = dataSourceURL
         
         makeHTTPGetRequest(route, onCompletion: { json, err in
             onCompletion(json as JSON)
         })
-        
-
     }
     
     func makeHTTPGetRequest(path: String, onCompletion: ServiceResponse) {

@@ -22,10 +22,13 @@ class CustomTabBarController: UITabBarController {
     }
     
     override func viewWillLayoutSubviews() {
-        var tabFrame = self.tabBar.frame
-        tabFrame.size.height = GlobalConstants.TabBar.Height
-        tabFrame.origin.y = self.view.frame.size.height - GlobalConstants.TabBar.Height
-        self.tabBar.frame = tabFrame
+        if self.tabBar.frame.height != GlobalConstants.TabBar.Height {
+            var tabFrame = self.tabBar.frame
+            tabFrame.size.height = GlobalConstants.TabBar.Height
+            
+            tabFrame.origin.y = self.view.frame.size.height - GlobalConstants.TabBar.Height
+            self.tabBar.frame = tabFrame
+        }
     }
     
 

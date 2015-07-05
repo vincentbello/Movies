@@ -96,27 +96,35 @@ class Movie: NSObject {
     
     
     // return UIImage based on link
-    func movieImageLink() -> String {
+    func movieImageLink(width: Int = 185) -> String {
         if count(self.img_link) > 0 {
-            return "http://image.tmdb.org/t/p/w300\(self.img_link)"
+            return "http://image.tmdb.org/t/p/w\(width)\(self.img_link)"
         } else {
             return GlobalConstants.DefaultMovieImage;
         }
     }
     
-    // return UIImage based on backdrop
-    func backdropImage() -> UIImage {
-        
-        var urlPath: String
+    func backdropImageLink(width: Int = 396) -> String {
         if count(self.backdrop) > 0 {
-            urlPath = "http://image.tmdb.org/t/p/w780\(self.backdrop)"
+            return "http://image.tmdb.org/t/p/w\(width)\(self.backdrop)"
         } else {
-            urlPath = GlobalConstants.DefaultBackdropImage;
+            return GlobalConstants.DefaultBackdropImage
         }
-        let url = NSURL(string: urlPath)
-        let data = NSData(contentsOfURL: url!)
-        return UIImage(data: data!)!
     }
+    
+//    // return UIImage based on backdrop
+//    func backdropImage() -> UIImage {
+//        
+//        var urlPath: String
+//        if count(self.backdrop) > 0 {
+//            urlPath =
+//        } else {
+//            urlPath = GlobalConstants.DefaultBackdropImage;
+//        }
+//        let url = NSURL(string: urlPath)
+//        let data = NSData(contentsOfURL: url!)
+//        return UIImage(data: data!)!
+//    }
     
     func genRuntime() -> String {
         

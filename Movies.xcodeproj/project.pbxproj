@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F97E7D801B3DC35000E6D76B /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97E7D7F1B3DC35000E6D76B /* CollectionTableViewCell.swift */; };
+		F95387A61B46D4A7005AD2E4 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95387A51B46D4A7005AD2E4 /* CollectionTableViewCell.swift */; };
+		F95387A81B46D6DA005AD2E4 /* RelatedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95387A71B46D6DA005AD2E4 /* RelatedCollectionViewCell.swift */; };
+		F95E9EC51B433D3E006729DD /* CustomCollectionTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95E9EC41B433D3E006729DD /* CustomCollectionTableViewCells.swift */; };
 		F9812D031B251EE800D5B8D7 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */; };
+		F9888E421B43F45100914896 /* ActorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9888E411B43F45100914896 /* ActorCollectionViewCell.swift */; };
 		F9890C0E1B361079007303FE /* RestAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9890C0D1B361079007303FE /* RestAPIManager.swift */; };
-		F9890C101B365727007303FE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9890C0F1B365727007303FE /* SwiftyJSON.swift */; };
 		F99595721B39B4AD00615629 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99595711B39B4AD00615629 /* Extensions.swift */; };
 		F99595741B39CAEC00615629 /* LinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99595731B39CAEC00615629 /* LinkTableViewCell.swift */; };
 		F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F004A1B1E637400E18850 /* MovieOperations.swift */; };
@@ -26,6 +28,8 @@
 		F9CF24231B23585F00FAE416 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */; };
 		F9CF24251B235DA600FAE416 /* ResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CF24241B235DA600FAE416 /* ResultsTableController.swift */; };
 		F9D2CE9B1B40A73A00E925D9 /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D2CE9A1B40A73A00E925D9 /* Actor.swift */; };
+		F9E0B3161B47E95C002E85A9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0B3151B47E95C002E85A9 /* SwiftyJSON.swift */; };
+		F9E0B3181B47F5FF002E85A9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E0B3171B47F5FF002E85A9 /* Reachability.swift */; };
 		F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F4B2AC1B1CE6F800CE088E /* AppDelegate.swift */; };
 		F9F4B2B21B1CE6F800CE088E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9F4B2B01B1CE6F800CE088E /* Main.storyboard */; };
 		F9F4B2B41B1CE6F800CE088E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9F4B2B31B1CE6F800CE088E /* Images.xcassets */; };
@@ -48,10 +52,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F97E7D7F1B3DC35000E6D76B /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		F95387A51B46D4A7005AD2E4 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		F95387A71B46D6DA005AD2E4 /* RelatedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedCollectionViewCell.swift; sourceTree = "<group>"; };
+		F95E9EC41B433D3E006729DD /* CustomCollectionTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionTableViewCells.swift; sourceTree = "<group>"; };
 		F9812D021B251EE800D5B8D7 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		F9888E411B43F45100914896 /* ActorCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActorCollectionViewCell.swift; sourceTree = "<group>"; };
 		F9890C0D1B361079007303FE /* RestAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAPIManager.swift; sourceTree = "<group>"; };
-		F9890C0F1B365727007303FE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = "../../../../Downloads/SwiftyJSON-master/Source/SwiftyJSON.swift"; sourceTree = "<group>"; };
 		F99595711B39B4AD00615629 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F99595731B39CAEC00615629 /* LinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTableViewCell.swift; sourceTree = "<group>"; };
 		F99F004A1B1E637400E18850 /* MovieOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieOperations.swift; sourceTree = "<group>"; };
@@ -67,6 +73,8 @@
 		F9CF24221B23585F00FAE416 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		F9CF24241B235DA600FAE416 /* ResultsTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsTableController.swift; sourceTree = "<group>"; };
 		F9D2CE9A1B40A73A00E925D9 /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
+		F9E0B3151B47E95C002E85A9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		F9E0B3171B47F5FF002E85A9 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		F9F4B2A71B1CE6F800CE088E /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9F4B2AB1B1CE6F800CE088E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9F4B2AC1B1CE6F800CE088E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,7 +127,10 @@
 		F95960481B20EBD100F1D6E4 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				F97E7D7F1B3DC35000E6D76B /* CollectionTableViewCell.swift */,
+				F95387A51B46D4A7005AD2E4 /* CollectionTableViewCell.swift */,
+				F95E9EC41B433D3E006729DD /* CustomCollectionTableViewCells.swift */,
+				F9888E411B43F45100914896 /* ActorCollectionViewCell.swift */,
+				F95387A71B46D6DA005AD2E4 /* RelatedCollectionViewCell.swift */,
 				F99595731B39CAEC00615629 /* LinkTableViewCell.swift */,
 				F9A0D6651B1F93D200237720 /* MovieTableViewCell.swift */,
 				F9CACB6F1B26A6260090FE0D /* CustomSearchController.swift */,
@@ -175,8 +186,9 @@
 			isa = PBXGroup;
 			children = (
 				F99595711B39B4AD00615629 /* Extensions.swift */,
-				F9890C0F1B365727007303FE /* SwiftyJSON.swift */,
+				F9E0B3171B47F5FF002E85A9 /* Reachability.swift */,
 				F99F004A1B1E637400E18850 /* MovieOperations.swift */,
+				F9E0B3151B47E95C002E85A9 /* SwiftyJSON.swift */,
 				F9F4B2CE1B1CF48E00CE088E /* GlobalConstants.swift */,
 				F9A0D6631B1F75B700237720 /* Utils.swift */,
 				F9F4B2B31B1CE6F800CE088E /* Images.xcassets */,
@@ -304,23 +316,27 @@
 			files = (
 				F9F4B2D11B1CF53000CE088E /* PopularTableViewController.swift in Sources */,
 				F99F004B1B1E637400E18850 /* MovieOperations.swift in Sources */,
-				F97E7D801B3DC35000E6D76B /* CollectionTableViewCell.swift in Sources */,
 				F9812D031B251EE800D5B8D7 /* CustomTabBarController.swift in Sources */,
 				F9CF24251B235DA600FAE416 /* ResultsTableController.swift in Sources */,
 				F9CACB681B26506E0090FE0D /* LinkObject.swift in Sources */,
 				F9A0D6661B1F93D200237720 /* MovieTableViewCell.swift in Sources */,
 				F9F4B2D71B1D3B7200CE088E /* MovieViewController.swift in Sources */,
-				F9890C101B365727007303FE /* SwiftyJSON.swift in Sources */,
 				F9F4B2AD1B1CE6F800CE088E /* AppDelegate.swift in Sources */,
 				F9A0D66B1B1FE78200237720 /* ProfileViewController.swift in Sources */,
 				F9F4B2D31B1CF5EB00CE088E /* Movie.swift in Sources */,
+				F95387A61B46D4A7005AD2E4 /* CollectionTableViewCell.swift in Sources */,
 				F9890C0E1B361079007303FE /* RestAPIManager.swift in Sources */,
 				F9CACB701B26A6260090FE0D /* CustomSearchController.swift in Sources */,
 				F9CF24231B23585F00FAE416 /* BaseTableViewController.swift in Sources */,
+				F9E0B3181B47F5FF002E85A9 /* Reachability.swift in Sources */,
 				F9D2CE9B1B40A73A00E925D9 /* Actor.swift in Sources */,
+				F9E0B3161B47E95C002E85A9 /* SwiftyJSON.swift in Sources */,
+				F95387A81B46D6DA005AD2E4 /* RelatedCollectionViewCell.swift in Sources */,
 				F99595741B39CAEC00615629 /* LinkTableViewCell.swift in Sources */,
+				F9888E421B43F45100914896 /* ActorCollectionViewCell.swift in Sources */,
 				F9F4B2CF1B1CF48E00CE088E /* GlobalConstants.swift in Sources */,
 				F99595721B39B4AD00615629 /* Extensions.swift in Sources */,
+				F95E9EC51B433D3E006729DD /* CustomCollectionTableViewCells.swift in Sources */,
 				F9A0D66D1B1FE88F00237720 /* MoreViewController.swift in Sources */,
 				F9CACB721B26A6560090FE0D /* LinksTableViewController.swift in Sources */,
 				F9A0D6691B1FE77100237720 /* FilterSearchViewController.swift in Sources */,

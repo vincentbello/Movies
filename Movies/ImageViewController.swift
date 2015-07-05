@@ -31,6 +31,40 @@ class ImageViewController: UIViewController {
         self.showHideCaption()
     }
     
+    @IBAction func zoom(sender: AnyObject) {
+        
+        if let gesture = sender as? UIPinchGestureRecognizer {
+            if gesture.state == .Ended || gesture.state == .Changed {
+                
+                let currentScale = self.imageView.frame.size.width / self.imageView.bounds.size.width
+                var newScale = max(min(3, currentScale * gesture.scale), 1)
+                
+                let transform = CGAffineTransformMakeScale(newScale, newScale)
+                
+                self.imageView.transform = transform
+                gesture.scale = 1
+                
+                
+                
+            }
+        }
+
+    }
+
+    @IBAction func doubleTap(sender: AnyObject) {
+        let currentScale = self.imageView.frame.size.width / self.imageView.bounds.size.width
+        let newScale = currentScale > 1.0 ? CGFloat(1) : CGFloat(2)
+        let transform = CGAffineTransformMakeScale(newScale, newScale)
+        
+        UIView.animateWithDuration(Double(0.1), delay: Double(0.0), options: UIViewAnimationOptions.CurveLinear, animations: {
+            
+            self.imageView.transform = transform
+            
+            }, completion: { finished in
+        })
+        
+    }
+    
     var currentMovie: Movie!
     
     class func forMovie(movie: Movie) -> ImageViewController {
@@ -47,14 +81,13 @@ class ImageViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         if isMovieImage {
-            imageView.image = currentMovie.image
+            imageView.imageFromUrl(currentMovie.movieImageLink(width: 780))
         } else {
             imageView.hidden = true
             
-            backdropImageView.image = currentMovie.backdropImage()
+            backdropImageView.imageFromUrl(currentMovie.backdropImageLink(width: 780))
             backdropImageView.hidden = false
         }
-        //imageView.image = currentMovie.image
         
         titleYearCaption.text = "\(currentMovie.title) (\(currentMovie.year))"
         
@@ -63,6 +96,8 @@ class ImageViewController: UIViewController {
         doneButton.layer.borderWidth = 1.0
         
         NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "showHideCaption", userInfo: nil, repeats: false)
+        
+        self.modalPresentationCapturesStatusBarAppearance = true
 
     }
 
@@ -92,6 +127,7 @@ class ImageViewController: UIViewController {
     }
     
     override func prefersStatusBarHidden() -> Bool {
+        println("this is executed!")
         return true
     }
     

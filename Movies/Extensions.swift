@@ -15,6 +15,31 @@ extension UIView {
     }
 }
 
+extension UIImageView {
+    public func imageFromUrl(urlString: String, onCompletion: ((UIImage) -> Void)? = nil ) {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.sizeToFit()
+        activityIndicator.center = self.center
+        activityIndicator.startAnimating()
+        self.addSubview(activityIndicator)
+        
+        if let url = NSURL(string: urlString) {
+            let request = NSURLRequest(URL: url)
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
+                (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                activityIndicator.removeFromSuperview()
+                self.userInteractionEnabled = true
+                if let downloadedImage = UIImage(data: data) {
+                    self.image = downloadedImage
+                    onCompletion?(downloadedImage)
+                } else {
+                    println("error downloading image")
+                }
+            }
+        }
+    }
+}
+
 
 extension UISearchBar {
     
@@ -54,6 +79,50 @@ extension NSMutableAttributedString {
     
 }
 
+extension UITableView {
+    
+    func reloadSection(section: Int) {
+        let indexSet = NSIndexSet(index: section)
+//        let range = NSMakeRange(section, 1)
+//        let indexSet = NSIndexSet(indexesInRange: range)
+        self.reloadSections(indexSet, withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    func addFooter() {
+        let footerView = UIView(frame: CGRectMake(0, 0, self.frame.width, 50))
+        footerView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        
+        let imageView = UIImageView(image: UIImage(named: "full_logo.png"))
+        imageView.frame.size = CGSizeMake(120, 20)
+        imageView.center = footerView.center
+        
+        footerView.addSubview(imageView)
+        
+        self.tableFooterView = footerView
+    }
+    
+    func setUpLoadingIndicator(offsetY: CGFloat = 0) {
+        
+        let tblViewFooter = UIView(frame: CGRectZero)
+        
+        let loadingLabel = UILabel()
+        loadingLabel.text = "Loading popular movies..."
+        loadingLabel.textColor = UIColor.darkTextColor()
+        loadingLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 15.0)
+        
+        tblViewFooter.addSubview(loadingLabel)
+        
+        loadingLabel.sizeToFit()
+        
+        loadingLabel.center = CGPointMake(self.center.x, self.center.y - offsetY)
+        
+        self.userInteractionEnabled = false
+        self.tableFooterView = tblViewFooter
+        
+    }
+    
+}
+
 
 extension UILabel {
     
@@ -73,6 +142,10 @@ extension UILabel {
                 self.font = UIFont(name: newValue, size: self.font.pointSize)
             }
         }
+    }
+    
+    func makeBold() {
+        self.font = UIFont(name: GlobalConstants.Fonts.Main.Bold, size: self.font.pointSize)
     }
 }
 

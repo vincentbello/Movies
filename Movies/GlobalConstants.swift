@@ -16,6 +16,7 @@ struct GlobalConstants {
     static let TableViewImageWidth = CGFloat(48)
     
     static let DefaultMovieImage = "http://readyto.watch/images/no_image_found.png"
+    static let DefaultActorImage = "http://readyto.watch/images/no_actor_found.png"
     static let DefaultBackdropImage = "http://readyto.watch/images/no_backdrop.png"
     
     static let StoryboardName = "Main"
@@ -70,8 +71,18 @@ struct GlobalConstants {
     struct Identifiers {
         static let Base = "Cell"
         static let Link = "LinkCell"
-        static let CollectionContainer = "CollectionContainer"
-        static let CollectionCell = "CollectionCell"
+        
+        struct CastCollection {
+            static let Container = "CastContainer"
+            static let Cell = "CastCell"
+        }
+        
+        struct RelatedCollection {
+            static let Container = "RelatedContainer"
+            static let Cell = "RelatedCell"
+        }
+//        static let CollectionContainer = "CollectionContainer"
+//        static let CollectionCell = "CollectionCell"
         
     }
     

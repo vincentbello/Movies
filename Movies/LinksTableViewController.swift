@@ -9,18 +9,23 @@
 import UIKit
 
 class LinksTableViewController: UITableViewController {
-
+    
     var currentMovie: Movie!
     
     var links = [LinkObject]()
     
-    var sections = ["Links", "Cast"]
+    var sections = ["Links", "Cast", "Related"]
+    
+    var cast: [Actor] = [Actor]()
+    var relatedMovies: [Movie] = [Movie]()
+    var colorsArray: [UIColor] = [UIColor.greenColor(), UIColor.blueColor(), UIColor.yellowColor(), UIColor.blackColor(), UIColor.brownColor(), UIColor.redColor()]
+    
+    var contentOffsetDictionary: NSMutableDictionary!
     
     
-    
-    var colorsArray: [UIColor] = [UIColor.blueColor(), UIColor.grayColor(), UIColor.greenColor(), UIColor.blueColor(), UIColor.redColor(), UIColor.yellowColor(), UIColor.orangeColor(), UIColor.brownColor()]
-    
-    var actorsArray: [Actor] = [Actor(id: 1, name: "Leo DiCaprio", about: "nayshes heavily"), Actor(id: 2, name: "George Lucas", about: "kasjdnvkajsdnv"), Actor(id: 3, name: "Brad Pitt", about: "Cyphs hardbody")]
+    let pendingActorOperations = PendingOperations()
+    let pendingMovieOperations = PendingOperations()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,33 +34,26 @@ class LinksTableViewController: UITableViewController {
         self.tableView.dataSource = self
         
         self.getLinks()
+        self.getCast()
+        self.getRelatedMovies()
+        self.tableView.addFooter()
         
-
-//        // Uncomment the following line to preserve selection between presentations
-//        // self.clearsSelectionOnViewWillAppear = false
-//        
-//        let nib = UINib(nibName: GlobalConstants.Links.Cells.NibName, bundle: nil)
-//
-//        // Required if we want to use dequeueReusableCellWithIdentifier(_:)
-//        tableView.registerNib(nib, forCellReuseIdentifier: GlobalConstants.Identifiers.Link)
-//        
         self.tableView.separatorInset = UIEdgeInsetsZero
         
         
-        println("this runs first")
-        self.tableView.registerClass(CollectionTableViewCell.self, forCellReuseIdentifier: GlobalConstants.Identifiers.CollectionContainer)
+        self.tableView.registerClass(CastTableViewCell.self, forCellReuseIdentifier: GlobalConstants.Identifiers.CastCollection.Container)
+        self.tableView.registerClass(RelatedTableViewCell.self, forCellReuseIdentifier: GlobalConstants.Identifiers.RelatedCollection.Container)
+        
+        self.contentOffsetDictionary = NSMutableDictionary()
+
         
     }
-    
-//    override func loadView() {
-//        self.tableView = UITableView()
-//    }
     
     func getLinks() {
         
         let dataFetchLink = "http://api.readyto.watch/links.php?id=\(currentMovie.id)&key=\(GlobalConstants.APIKey)"
         
-        RestAPIManager.sharedInstance.getPopularMovies(dataFetchLink) { json in
+        RestAPIManager.sharedInstance.getRequest(dataFetchLink) { json in
             
             if json != nil {
                 let linksArray = json["links"]
@@ -65,18 +63,12 @@ class LinksTableViewController: UITableViewController {
                     var link = LinkObject(json: subJson)
                     linksArr.append(link)
                 }
+                
                 self.links = linksArr
-//                self.tableView.delegate = self.linksTableViewController
                 
                 dispatch_async(dispatch_get_main_queue(), {
-//                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
-                    
-                    self.tableView.reloadData()
-                    //self.tableView.frame = CGRectMake(0, 0, self.tableView.contentSize.width, self.tableView.frame.height)
-                    
+                    self.tableView.reloadSection(0)
                 })
-                
-                let frame = self.tableView.superview?.frame
                 
             } else {
                 println("error loading links")
@@ -84,20 +76,74 @@ class LinksTableViewController: UITableViewController {
         }
         
     }
-
+    
+    
+    func getCast() {
+        
+        let dataFetchLink = "http://api.readyto.watch/cast.php?id=\(currentMovie.id)&key=\(GlobalConstants.APIKey)"
+        
+        RestAPIManager.sharedInstance.getRequest(dataFetchLink) { json in
+            
+            if json != nil {
+                
+                var actorsArr = [Actor]()
+                for (index: String, subJson: JSON) in json {
+                    var actor = Actor(json: subJson)
+                    actorsArr.append(actor)
+                }
+                self.cast = actorsArr
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    self.tableView.reloadSection(1)
+                    
+                })
+                
+            } else {
+                println("error loading cast")
+            }
+        }
+    }
+    
+    func getRelatedMovies() {
+        
+        let dataFetchLink = "http://api.readyto.watch/related.php?id=\(currentMovie.id)&key=\(GlobalConstants.APIKey)"
+        
+        RestAPIManager.sharedInstance.getRequest(dataFetchLink) { json in
+            
+            if json != nil {
+                
+                var moviesArr = [Movie]()
+                for (index: String, subJson: JSON) in json {
+                    var movie = Movie(json: subJson)
+                    moviesArr.append(movie)
+                }
+                self.relatedMovies = moviesArr
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.tableView.reloadSection(2)
+                })
+                
+            } else {
+                println("error loading related movies")
+            }
+        }
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return sections.count
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
@@ -106,11 +152,13 @@ class LinksTableViewController: UITableViewController {
             return self.links.count
         case 1: // Cast
             return 1
+        case 2:
+            return 1
         default:
             return 0
         }
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         switch indexPath.section {
@@ -134,6 +182,8 @@ class LinksTableViewController: UITableViewController {
             // Configure the cell...
             if count(link.link) > 0 {
                 cell.imageView?.image = UIImage(named: "\(linkShort)_color.png")
+                cell.textLabel?.makeBold()
+                cell.detailTextLabel?.textColor = UIColor.blackColor()
                 cell.detailTextLabel?.attributedText = link.pricesString()
                 cell.userInteractionEnabled = true
             } else {
@@ -153,22 +203,20 @@ class LinksTableViewController: UITableViewController {
             return cell
         case 1:
             
-            //let collectionCell: CollectionTableViewCell = cell as! CollectionTableViewCell
-            //collectionCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.row)
-
+            let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.CastCollection.Container, forIndexPath: indexPath) as! CastTableViewCell
+            //cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.section)
             
+            return cell
+        
+        case 2:
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.CollectionContainer, forIndexPath: indexPath) as! CollectionTableViewCell
-            cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.row)
+            let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.RelatedCollection.Container, forIndexPath: indexPath) as! RelatedTableViewCell
+            //cell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.section)
             
             return cell
             
         default:
-            let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Link, forIndexPath: indexPath) as! LinkTableViewCell
-            
-            cell.textLabel?.text = "Naysh City, USA"
-            
-            return cell
+            return UITableViewCell()
         }
     }
     
@@ -177,12 +225,12 @@ class LinksTableViewController: UITableViewController {
         case 0:
             return GlobalConstants.Links.CellHeight
         default:
-            return 150
+            return 190
         }
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 36
+        return 40
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -204,10 +252,9 @@ class LinksTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let superview = self.tableView.superview!.frame.size
         
         let link = links[indexPath.row]
-
+        
         if count(link.link) > 0 {
             let links = link.app_link()
             UIApplication.tryURL(link.app_link())
@@ -224,14 +271,27 @@ class LinksTableViewController: UITableViewController {
     // MARK: - Collection View Data Source
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
-//            let collectionCell: CollectionTableViewCell = cell as! CollectionTableViewCell
-//            collectionCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.row)
-            //let index: NSInteger = collectionCell.collectionView.tag
-//            let value: AnyObject? = self.contentOffsetDictionary.valueForKey(index.description)
-//            let horizontalOffset: CGFloat = CGFloat(value != nil ? value!.floatValue : 0)
-//            collectionCell.collectionView.setContentOffset(CGPointMake(horizontalOffset, 0), animated: false)
+        switch indexPath.section {
+        case 1:
+            let collectionCell: CastTableViewCell = cell as! CastTableViewCell
+            collectionCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.section)
+            let index: NSInteger = collectionCell.collectionView.tag
+            let value: AnyObject? = self.contentOffsetDictionary.valueForKey(index.description)
+            let horizontalOffset: CGFloat = CGFloat(value != nil ? value!.floatValue : 0)
+            collectionCell.collectionView.setContentOffset(CGPointMake(horizontalOffset, 0), animated: false)
+
+        case 2:
+            let collectionCell: RelatedTableViewCell = cell as! RelatedTableViewCell
+            collectionCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, index: indexPath.section)
+            let index: NSInteger = collectionCell.collectionView.tag
+            let value: AnyObject? = self.contentOffsetDictionary.valueForKey(index.description)
+            let horizontalOffset: CGFloat = CGFloat(value != nil ? value!.floatValue : 0)
+            collectionCell.collectionView.setContentOffset(CGPointMake(horizontalOffset, 0), animated: false)
+
+        default:
+            break
         }
+        
     }
     
     
@@ -241,64 +301,60 @@ class LinksTableViewController: UITableViewController {
     
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
 
 extension LinksTableViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        println("this runs second")
-        return self.actorsArray.count
+        switch collectionView.tag {
+        case 1:
+            return self.cast.count
+        case 2:
+            return self.relatedMovies.count
+        default:
+            return 0
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(GlobalConstants.Identifiers.CollectionCell, forIndexPath: indexPath) as! UICollectionViewCell
         
-        //cell.backgroundColor = self.colorsArray[indexPath.item]
 
-        cell.layer.borderColor = UIColor.redColor().CGColor
-        cell.layer.borderWidth = 2.0
-        let actor = self.actorsArray[indexPath.item]
-        
-        let imageView = UIImageView(frame: CGRectMake(25, 10, 50, 100))
-        let textLabel = UILabel(frame: CGRectMake(0, 110, 100, 15))
-        let infoLabel = UILabel(frame: CGRectMake(0, 125, 100, 15))
-        
-        imageView.image = actor.image
-        
-        textLabel.text = actor.name
-        textLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Bold, size: 13.0)
-        textLabel.textColor = GlobalConstants.Colors.DefaultColor
-        
-        infoLabel.text = actor.about
-        infoLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 11.5)
-        infoLabel.textColor = UIColor.lightGrayColor()
-        
-        cell.addSubview(imageView)
-        cell.addSubview(textLabel)
-        cell.addSubview(infoLabel)
-        
-        
-        return cell
+        switch collectionView.tag {
+        case 1:
+            let cell: ActorCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(GlobalConstants.Identifiers.CastCollection.Cell, forIndexPath: indexPath) as! ActorCollectionViewCell
+            
+            let actor = self.cast[indexPath.row]
+            cell.configure(forActor: actor)
+            
+            return cell
+            
+        case 2:
+            let cell: RelatedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(GlobalConstants.Identifiers.RelatedCollection.Cell, forIndexPath: indexPath) as! RelatedCollectionViewCell
+            
+            let movie = self.relatedMovies[indexPath.row]
+            cell.configure(forMovie: movie)
+                        
+            return cell
+            
+        default:
+            return UICollectionViewCell()
+        }
     }
     
-//    override func scrollViewDidScroll(scrollView: UIScrollView) {
-//        if !scrollView.isKindOfClass(UICollectionView) {
-//            return
-//        }
-//        let horizontalOffset: CGFloat = scrollView.contentOffset.x
-//        let collectionView: UICollectionView = scrollView as! UICollectionView
-//        self.contentOffsetDictionary.setValue(horizontalOffset, forKey: collectionView.tag.description)
-//    }
-    
-    
-    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        if !scrollView.isKindOfClass(UICollectionView) {
+            return
+        }
+        let horizontalOffset: CGFloat = scrollView.contentOffset.x
+        let collectionView: UICollectionView = scrollView as! UICollectionView
+        self.contentOffsetDictionary.setValue(horizontalOffset, forKey: collectionView.tag.description)
+    }
     
 }

@@ -13,15 +13,18 @@ class Actor: NSObject {
     var id : Int = 0
     var person_id : Int = 0
     var name : String = ""
-    var photo : String = ""
     var about : String = ""
     var dob : String = ""
     var dod : String = ""
     var imdb_id : String = ""
     var backdrop : String = ""
     var backdrop_id : Int = 0
-    var image = UIImage(named: "no_image_found")
+    
+    var photo : String = ""
+    var image = UIImage(named: "no_actor_found")
     var imageState = PhotoRecordState.New
+    
+    var character : String = ""
 
     init(id: Int, name: String, about: String) {
         self.id = id
@@ -33,12 +36,7 @@ class Actor: NSObject {
         super.init()
         
         for (keyName: String, subJson: JSON) in json {
-            let keyValue : AnyObject
-            if keyName == "linkCount" {
-                keyValue = subJson.int!
-            } else {
-                keyValue = subJson.string!
-            }
+            let keyValue = subJson.string!
             
             // if property exists
             if self.respondsToSelector(NSSelectorFromString(keyName)) {
@@ -46,4 +44,15 @@ class Actor: NSObject {
             }
         }
     }
+    
+    // return UIImage based on link
+    func actorImageLink() -> String {
+        if count(self.photo) > 0 {
+            return "http://image.tmdb.org/t/p/w185\(self.photo)"
+        } else {
+            return GlobalConstants.DefaultActorImage;
+        }
+    }
+    
+    
 }

@@ -343,6 +343,8 @@
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="2tv-BW-4RV" appends="YES" id="QuO-EP-gQn"/>
+                                    <outletCollection property="gestureRecognizers" destination="aOJ-eC-vka" appends="YES" id="gTi-Bc-JAm"/>
+                                    <outletCollection property="gestureRecognizers" destination="SHx-Zg-Ilh" appends="YES" id="oUU-ge-l0o"/>
                                 </connections>
                             </imageView>
                             <button opaque="NO" alpha="0.79999999999999982" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFD-h0-tsq">
@@ -443,6 +445,16 @@
                         <action selector="touchedScreen:" destination="xhz-aC-O2H" id="kHw-PB-L8s"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pinchGestureRecognizer id="aOJ-eC-vka">
+                    <connections>
+                        <action selector="zoom:" destination="xhz-aC-O2H" id="aNa-7R-TL4"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="SHx-Zg-Ilh">
+                    <connections>
+                        <action selector="doubleTap:" destination="xhz-aC-O2H" id="bhP-cL-KN0"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3573" y="-296"/>
         </scene>
@@ -500,6 +512,7 @@
                                                 <subviews>
                                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZVQ-SA-rrC">
                                                         <rect key="frame" x="8" y="8" width="100" height="150"/>
+                                                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="ZVQ-SA-rrC" secondAttribute="height" multiplier="2:3" id="Kah-mM-DR2"/>
                                                             <constraint firstAttribute="width" constant="100" id="My2-ur-S6l"/>
@@ -563,8 +576,9 @@
                                                     <constraint firstItem="0nS-oQ-6kT" firstAttribute="top" secondItem="ZRG-PC-JTm" secondAttribute="bottom" constant="8" id="yqg-fT-6dX"/>
                                                 </constraints>
                                             </view>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z9b-Bs-8Tv">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z9b-Bs-8Tv">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="z9b-Bs-8Tv" secondAttribute="height" multiplier="2:1" id="9Qx-1w-J7n"/>
                                                 </constraints>

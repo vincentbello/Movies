@@ -6,6 +6,14 @@
          contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, cellForRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ObjectiveC.UITableViewCell:LinksTableViewController.swift">
       </ContextState>
       <ContextState
+         contextName = "Movies.LinksTableViewController.(startDownloadForRecord (Movies.LinksTableViewController) -&gt; (Movies.Actor, indexPath : ObjectiveC.NSIndexPath) -&gt; ()).(closure #1).(closure #1):LinksTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "downloader">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Movies.MovieViewController.viewWillAppear (Movies.MovieViewController)(Swift.Bool) -&gt; ():MovieViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -15,6 +23,9 @@
                value = "synopsisLabel">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Movies.CastCollectionView.(startDownloadForRecord (Movies.CastCollectionView) -&gt; (Movies.Actor, indexPath : ObjectiveC.NSIndexPath) -&gt; ()).(closure #1).(closure #1):CastTableViewCell.swift">
       </ContextState>
       <ContextState
          contextName = "Movies.LinksTableViewController.viewDidLoad (Movies.LinksTableViewController)() -&gt; ():LinksTableViewController.swift">
@@ -44,6 +55,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ext.Movies.ObjectiveC.UIImageView.imageFromUrl (ObjectiveC.UIImageView)(Swift.String) -&gt; ():Extensions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "activityIndicator.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -53,6 +72,9 @@
       </ContextState>
       <ContextState
          contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, didSelectRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ():LinksTableViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Movies.ActorImageDownloader.main (Movies.ActorImageDownloader)() -&gt; ():MovieOperations.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

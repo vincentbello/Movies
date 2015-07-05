@@ -58,17 +58,25 @@ class MovieViewController: UIViewController {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.setUpViewElements()
+//                self.setUpViewElements()
 //                self.loadingView.removeFromSuperview()
             }
         }
+        
+        
+        //self.tab
         
     }
     
     func setUpViewElements() {
         
-        backdropImage.image = currentMovie.backdropImage()
-        movieImage.image = currentMovie.image
+        backdropImage.imageFromUrl(currentMovie.backdropImageLink())
+        //backdropImage.image = currentMovie.backdropImage()
+        if currentMovie.imageState == .Downloaded {
+            movieImage.image = currentMovie.image
+        } else {
+            movieImage.imageFromUrl(currentMovie.movieImageLink())
+        }
         taglineLabel.text = count(currentMovie.tagline) > 0 ? "\"\(currentMovie.tagline)\"" : ""
         titleLabel.text = currentMovie.title
         yearLabel.text = String(currentMovie.year)
@@ -84,7 +92,7 @@ class MovieViewController: UIViewController {
         let textViewOriginY = synopsisLabel.frame.origin.y
         let imgOriginY = rectObj.origin.y + rectObj.height
         if imgOriginY > textViewOriginY {
-            let exclusionRect = UIBezierPath(rect: CGRectMake(5, 0, rectObj.width, imgOriginY - textViewOriginY))
+            let exclusionRect = UIBezierPath(rect: CGRectMake(5, 0, rectObj.width, imgOriginY - textViewOriginY - 10))
             synopsisLabel.textContainer.exclusionPaths = [exclusionRect]
         }
         synopsisLabel.text = currentMovie.synopsis
@@ -104,7 +112,7 @@ class MovieViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         
-        let containerHeight = CGFloat(1000)
+        let containerHeight = CGFloat(1035)
         let informationViewHeight = max(synopsisLabel.maxYinParentFrame(), movieImage.maxYinParentFrame())
         let contentViewHeight = backdropImage.frame.height + informationViewHeight + containerHeight
         
@@ -129,8 +137,6 @@ class MovieViewController: UIViewController {
     
 
     func goToImageView(sender: UITapGestureRecognizer) {
-        
-        println("clicked")
         
         // Set up the detail view controller to show.
         let imageViewController = ImageViewController.forMovie(currentMovie)

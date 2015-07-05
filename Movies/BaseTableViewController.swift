@@ -85,7 +85,7 @@ class BaseTableViewController: UITableViewController {
             return
         }
         
-        let downloader = ImageDownloader(movie: movie)
+        let downloader = MovieImageDownloader(movie: movie)
         
         downloader.completionBlock = {
             if downloader.cancelled {
