@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let item = self.tabBarController?.tabBar.items?[2] as? UITabBarItem {
+        if let item = self.tabBarController?.tabBar.items?[2] {
             item.selectedImage = UIImage(named: "user_selected.png")
         }
     }

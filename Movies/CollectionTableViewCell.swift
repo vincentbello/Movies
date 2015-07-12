@@ -33,14 +33,17 @@ class CollectionTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsMake(4, 5, 4, 5)
-        layout.itemSize = CGSizeMake(100, 170)
+        //layout.sectionInset = UIEdgeInsetsMake(0, 5, 3, 5)
+        layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10)
+        layout.itemSize = CGSizeMake(90, 175)
         layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        layout.minimumInteritemSpacing = 15.0
         self.collectionView = CollectionView(frame: CGRectZero, collectionViewLayout: layout)
         self.collectionView.backgroundColor = UIColor.whiteColor()
         self.collectionView.showsHorizontalScrollIndicator = true
         self.contentView.addSubview(self.collectionView)
-        self.layoutMargins = UIEdgeInsetsMake(10, 0, 10, 0)
+//        self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+//        println(self.layoutMargins)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -51,7 +54,8 @@ class CollectionTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         let frame = self.contentView.bounds
-        self.collectionView.frame = CGRectMake(0, 0.5, frame.size.width, frame.size.height - 1)
+        self.collectionView.frame = frame
+//        self.collectionView.frame = CGRectMake(0, 0.5, frame.size.width, frame.size.height - 1)
     }
     
     func setCollectionViewDataSourceDelegate(dataSourceDelegate delegate: protocol<UICollectionViewDelegate,UICollectionViewDataSource>, index: NSInteger) {
@@ -79,25 +83,37 @@ class CollectionViewCell: UICollectionViewCell {
     private(set) var nameLabel : UILabel?
     private(set) var aboutLabel : UILabel?
     
+    override var selected: Bool {
+        didSet {
+            if self.selected {
+                self.backgroundColor = GlobalConstants.Colors.DefaultColor
+                self.nameLabel?.textColor = UIColor.whiteColor()
+                self.aboutLabel?.textColor = UIColor.whiteColor()
+            } else {
+                self.backgroundColor = UIColor.clearColor()
+                self.nameLabel?.textColor = GlobalConstants.Colors.DefaultColor
+                self.aboutLabel?.textColor = UIColor.blackColor()
+            }
+        }
+    }
     
     func configureElements() {
-        
+                
         if self.imageView == nil {
-            self.imageView = UIImageView(frame: CGRectMake(17, 0, 80, 120))
+            self.imageView = UIImageView(frame: CGRectMake(5, 5, 80, 120))
+            self.imageView?.backgroundColor = UIColor.darkGrayColor()
             self.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
-            //self.nameLabel = UILabel(frame: CGRectMake(0, 110, 100, 15))
+            self.imageView?.clipsToBounds
             self.nameLabel = UILabel()
-            //self.aboutLabel = UILabel(frame: CGRectMake(0, 125, 100, 15))
             self.aboutLabel = UILabel()
             
-            self.nameLabel!.frame.origin = CGPointMake(0, 125)
+            self.nameLabel!.frame.origin = CGPointMake(0, 130)
             self.nameLabel!.numberOfLines = 2
-            self.nameLabel!.font = UIFont(name: GlobalConstants.Fonts.Main.Bold, size: 12.5)
+            self.nameLabel!.font = UIFont.boldSystemFontOfSize(11.5)
             self.nameLabel!.textColor = GlobalConstants.Colors.DefaultColor
             self.nameLabel!.textAlignment = NSTextAlignment.Center
             
-            self.aboutLabel!.font = UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 11.0)
-            //            self.aboutLabel!.textColor = UIColor.darkGrayColor()
+            self.aboutLabel!.font = UIFont.systemFontOfSize(10.5)
             self.aboutLabel!.textAlignment = NSTextAlignment.Center
             
             self.contentView.addSubview(self.imageView!)

@@ -50,7 +50,8 @@ class BaseTableViewController: UITableViewController {
 
     func configureCell(cell: MovieTableViewCell, forMovie movie: Movie, indexPath: NSIndexPath) {
 
-        cell.textLabel?.attributedText = cell.getAttributedTitleAndYear(movie.title, year: movie.year)
+        cell.textLabel?.attributedText = movie.titleAttributedString()
+        //cell.textLabel?.attributedText = cell.getAttributedTitleAndYear(movie.title, year: movie.year)
         cell.detailTextLabel?.text = movie.genres
         
         // badge
@@ -81,7 +82,7 @@ class BaseTableViewController: UITableViewController {
     }
     
     func startDownloadForRecord(movie: Movie, indexPath: NSIndexPath) {
-        if let downloadOperation = pendingOperations.downloadsInProgress[indexPath] {
+        if let _ = pendingOperations.downloadsInProgress[indexPath] {
             return
         }
         

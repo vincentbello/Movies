@@ -30,11 +30,11 @@ class RestAPIManager: NSObject {
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request, completionHandler: { data, response, error -> Void in
-            let json: JSON = JSON(data: data)
+            let json: JSON = JSON(data: data!)
             onCompletion(json, error)
         })
         
-        task.resume()
+        task!.resume()
     }
     
     
@@ -45,16 +45,21 @@ class RestAPIManager: NSObject {
         // Set the method to POST
         request.HTTPMethod = "POST"
         
-        // Set the POST body for the request
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(body, options: nil, error: &err)
+        do {
+            // Set the POST body for the request
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(body, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         let session = NSURLSession.sharedSession()
         
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            let json: JSON = JSON(data: data)
+            let json: JSON = JSON(data: data!)
             onCompletion(json, err)
         })
         
-        task.resume()
+        task!.resume()
     }
     
     

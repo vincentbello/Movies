@@ -59,8 +59,8 @@ class LinksTableViewController: UITableViewController {
                 let linksArray = json["links"]
                 
                 var linksArr = [LinkObject]()
-                for (index: String, subJson: JSON) in linksArray {
-                    var link = LinkObject(json: subJson)
+                for (_, subJson): (String, JSON) in linksArray {
+                    let link = LinkObject(json: subJson)
                     linksArr.append(link)
                 }
                 
@@ -71,7 +71,7 @@ class LinksTableViewController: UITableViewController {
                 })
                 
             } else {
-                println("error loading links")
+                print("error loading links")
             }
         }
         
@@ -87,8 +87,8 @@ class LinksTableViewController: UITableViewController {
             if json != nil {
                 
                 var actorsArr = [Actor]()
-                for (index: String, subJson: JSON) in json {
-                    var actor = Actor(json: subJson)
+                for (_, subJson): (String, JSON) in json {
+                    let actor = Actor(json: subJson)
                     actorsArr.append(actor)
                 }
                 self.cast = actorsArr
@@ -100,7 +100,7 @@ class LinksTableViewController: UITableViewController {
                 })
                 
             } else {
-                println("error loading cast")
+                print("error loading cast")
             }
         }
     }
@@ -114,8 +114,8 @@ class LinksTableViewController: UITableViewController {
             if json != nil {
                 
                 var moviesArr = [Movie]()
-                for (index: String, subJson: JSON) in json {
-                    var movie = Movie(json: subJson)
+                for (_, subJson): (String, JSON) in json {
+                    let movie = Movie(json: subJson)
                     moviesArr.append(movie)
                 }
                 self.relatedMovies = moviesArr
@@ -125,7 +125,7 @@ class LinksTableViewController: UITableViewController {
                 })
                 
             } else {
-                println("error loading related movies")
+                print("error loading related movies")
             }
         }
         
@@ -167,10 +167,10 @@ class LinksTableViewController: UITableViewController {
             
             let link = links[indexPath.row]
             
-            var (linkShort, linkLong, linkCaption) = GlobalConstants.Links.LinkTypes[5]
+            var (linkShort, linkLong, _) = GlobalConstants.Links.LinkTypes[5]
             
             for linkType in GlobalConstants.Links.LinkTypes {
-                (linkShort, linkLong, linkCaption) = linkType
+                (linkShort, linkLong, _) = linkType
                 if linkShort == link.type {
                     break
                 }
@@ -180,9 +180,9 @@ class LinksTableViewController: UITableViewController {
             cell.textLabel?.text = linkLong
             
             // Configure the cell...
-            if count(link.link) > 0 {
+            if link.link.characters.count > 0 {
                 cell.imageView?.image = UIImage(named: "\(linkShort)_color.png")
-                cell.textLabel?.makeBold()
+//                cell.textLabel?.makeBold()
                 cell.detailTextLabel?.textColor = UIColor.blackColor()
                 cell.detailTextLabel?.attributedText = link.pricesString()
                 cell.userInteractionEnabled = true
@@ -238,12 +238,12 @@ class LinksTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerLabel = UILabel(frame: CGRectMake(15, 10, self.tableView.frame.width, 20))
+        let headerLabel = UILabel(frame: CGRectMake(15, 15, self.tableView.frame.width, 20))
         headerLabel.textColor = GlobalConstants.Colors.DefaultColor
-        headerLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 18)
+        headerLabel.font = UIFont.boldSystemFontOfSize(18)
         headerLabel.text = self.tableView(self.tableView, titleForHeaderInSection: section)
         
-        let headerView = UIView()
+        let headerView = UIView(frame: CGRectMake(0, 0, self.tableView.frame.width, 40))
         headerView.addSubview(headerLabel)
         headerView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         
@@ -255,8 +255,7 @@ class LinksTableViewController: UITableViewController {
         
         let link = links[indexPath.row]
         
-        if count(link.link) > 0 {
-            let links = link.app_link()
+        if link.link.characters.count > 0 {
             UIApplication.tryURL(link.app_link())
         }
         
@@ -345,6 +344,34 @@ extension LinksTableViewController: UICollectionViewDataSource, UICollectionView
             
         default:
             return UICollectionViewCell()
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        switch collectionView.tag {
+        case 1:
+            // push to actor view controller
+            let selectedActor = self.cast[indexPath.item]
+            
+            // Set up the detail view controller to show.
+            let detailViewController = ActorViewController.forActor(selectedActor)
+            
+            collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+            
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+            
+        case 2:
+            let selectedMovie = self.relatedMovies[indexPath.item]
+            
+            // Set up the detail view controller to show.
+            let detailViewController = MovieViewController.forMovie(selectedMovie)
+            
+            // Note: Should not be necessary but current iOS 8.0 bug requires it.
+            //collectionView.deselectRowAtIndexPath(collectionView.indexPathsForSelectedItems()!, animated: false)
+            
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+        default:
+            break
         }
     }
     

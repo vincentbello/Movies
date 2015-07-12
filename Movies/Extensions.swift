@@ -17,23 +17,23 @@ extension UIView {
 
 extension UIImageView {
     public func imageFromUrl(urlString: String, onCompletion: ((UIImage) -> Void)? = nil ) {
-        let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.sizeToFit()
-        activityIndicator.center = self.center
+        let indicatorX = (self.frame.size.width / 2) - 10
+        let indicatorY = (self.frame.size.height / 2) - 10
+        let activityIndicator = UIActivityIndicatorView(frame: CGRectMake(indicatorX, indicatorY, 20, 20))
         activityIndicator.startAnimating()
         self.addSubview(activityIndicator)
         
         if let url = NSURL(string: urlString) {
             let request = NSURLRequest(URL: url)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
-                (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
                 activityIndicator.removeFromSuperview()
                 self.userInteractionEnabled = true
-                if let downloadedImage = UIImage(data: data) {
+                if let downloadedImage = UIImage(data: data!) {
                     self.image = downloadedImage
                     onCompletion?(downloadedImage)
                 } else {
-                    println("error downloading image")
+                    print("error downloading image")
                 }
             }
         }
@@ -44,8 +44,8 @@ extension UIImageView {
 extension UISearchBar {
     
     var textField: UITextField? {
-        for parent in subviews as! [UIView] {
-            for subview in parent.subviews as! [UIView] {
+        for parent in subviews as [UIView] {
+            for subview in parent.subviews as [UIView] {
                 if let textField = subview as? UITextField {
                     return textField
                 }
@@ -103,12 +103,14 @@ extension UITableView {
     
     func setUpLoadingIndicator(offsetY: CGFloat = 0) {
         
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
         let tblViewFooter = UIView(frame: CGRectZero)
         
         let loadingLabel = UILabel()
         loadingLabel.text = "Loading popular movies..."
         loadingLabel.textColor = UIColor.darkTextColor()
-        loadingLabel.font = UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 15.0)
+        loadingLabel.font = UIFont.systemFontOfSize(15.0)
         
         tblViewFooter.addSubview(loadingLabel)
         
@@ -145,26 +147,26 @@ extension UILabel {
     }
     
     func makeBold() {
-        self.font = UIFont(name: GlobalConstants.Fonts.Main.Bold, size: self.font.pointSize)
+        self.font = UIFont.boldSystemFontOfSize(self.font.pointSize)
     }
 }
 
 extension UITextField {
     
     var substituteFontName : String {
-        get { return self.font.fontName }
+        get { return self.font!.fontName }
         set {
-            if self.font.fontName.rangeOfString("Heavy") == nil {
-                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            if self.font!.fontName.rangeOfString("Heavy") == nil {
+                self.font = UIFont(name: newValue, size: self.font!.pointSize)
             }
         }
     }
     
     var substituteFontNameBold : String {
-        get { return self.font.fontName }
+        get { return self.font!.fontName }
         set {
-            if self.font.fontName.rangeOfString("Heavy") != nil {
-                self.font = UIFont(name: newValue, size: self.font.pointSize)
+            if self.font!.fontName.rangeOfString("Heavy") != nil {
+                self.font = UIFont(name: newValue, size: self.font!.pointSize)
             }
         }
     }

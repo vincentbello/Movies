@@ -37,7 +37,7 @@ class ImageViewController: UIViewController {
             if gesture.state == .Ended || gesture.state == .Changed {
                 
                 let currentScale = self.imageView.frame.size.width / self.imageView.bounds.size.width
-                var newScale = max(min(3, currentScale * gesture.scale), 1)
+                let newScale = max(min(3, currentScale * gesture.scale), 1)
                 
                 let transform = CGAffineTransformMakeScale(newScale, newScale)
                 
@@ -81,11 +81,11 @@ class ImageViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         if isMovieImage {
-            imageView.imageFromUrl(currentMovie.movieImageLink(width: 780))
+            imageView.imageFromUrl(currentMovie.movieImageLink(780))
         } else {
             imageView.hidden = true
             
-            backdropImageView.imageFromUrl(currentMovie.backdropImageLink(width: 780))
+            backdropImageView.imageFromUrl(currentMovie.backdropImageLink(780))
             backdropImageView.hidden = false
         }
         
@@ -127,7 +127,7 @@ class ImageViewController: UIViewController {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        println("this is executed!")
+        print("this is executed!")
         return true
     }
     

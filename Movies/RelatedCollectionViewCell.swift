@@ -30,8 +30,8 @@ class RelatedCollectionViewCell: CollectionViewCell {
         self.aboutLabel!.text = String(movie.year)
         
         self.nameLabel!.sizeToFit()
-        self.nameLabel!.frame.size.width = 100
+        self.nameLabel!.frame.size.width = 90
         
-        self.aboutLabel!.frame = CGRectMake(0, self.nameLabel!.maxYinParentFrame(), 100, 15)
+        self.aboutLabel!.frame = CGRectMake(0, self.nameLabel!.maxYinParentFrame(), 90, 15)
     }
 }

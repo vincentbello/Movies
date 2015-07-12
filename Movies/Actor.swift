@@ -35,7 +35,7 @@ class Actor: NSObject {
     init(json: JSON) {
         super.init()
         
-        for (keyName: String, subJson: JSON) in json {
+        for (keyName, subJson): (String, JSON) in json {
             let keyValue = subJson.string!
             
             // if property exists
@@ -47,11 +47,35 @@ class Actor: NSObject {
     
     // return UIImage based on link
     func actorImageLink() -> String {
-        if count(self.photo) > 0 {
+        if self.photo.characters.count > 0 {
             return "http://image.tmdb.org/t/p/w185\(self.photo)"
         } else {
             return GlobalConstants.DefaultActorImage;
         }
+    }
+    
+    func backdropImageLink(width: Int = 396) -> String {
+        if self.backdrop.characters.count > 0 {
+            return "http://image.tmdb.org/t/p/w\(width)\(self.backdrop)"
+        } else {
+            return GlobalConstants.DefaultBackdropImage
+        }
+    }
+    
+    func formattedAbout() -> String {
+        
+        var str = self.about.stringByReplacingOccurrencesOfString("From Wikipedia, the free encyclopedia. \n\n", withString: "")
+        str = str.stringByReplacingOccurrencesOfString("From Wikipedia, the free encyclopedia.\n\n", withString: "")
+        str = str.stringByReplacingOccurrencesOfString("From Wikipedia, the free encyclopedia\n\n", withString: "")
+        str.stringByReplacingOccurrencesOfString("\n\n", withString: "\n")
+        
+//        119: $string = str_replace('From Wikipedia, the free encyclopedia. \n\n', '', $string);
+//        120: $string = str_replace('From Wikipedia, the free encyclopedia.', '', $string);
+//        121: $string = str_replace('From Wikipedia, the free encyclopedia', '', $string);
+        
+        
+        
+        return str
     }
     
     

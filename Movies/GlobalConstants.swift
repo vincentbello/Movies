@@ -81,6 +81,10 @@ struct GlobalConstants {
             static let Container = "RelatedContainer"
             static let Cell = "RelatedCell"
         }
+        
+        struct FilmographyCollection {
+            static let Cell = "FilmographyCell"
+        }
 //        static let CollectionContainer = "CollectionContainer"
 //        static let CollectionCell = "CollectionCell"
         

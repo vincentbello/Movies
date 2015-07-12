@@ -21,8 +21,6 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var taglineLabel: UILabel!
     @IBOutlet weak var movieImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var yearLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var synopsisLabel: UITextView!
     
@@ -53,19 +51,9 @@ class MovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpViewElements()
+        self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            
-            dispatch_async(dispatch_get_main_queue()) {
-//                self.setUpViewElements()
-//                self.loadingView.removeFromSuperview()
-            }
-        }
-        
-        
-        //self.tab
-        
+        setUpViewElements()        
     }
     
     func setUpViewElements() {
@@ -77,30 +65,36 @@ class MovieViewController: UIViewController {
         } else {
             movieImage.imageFromUrl(currentMovie.movieImageLink())
         }
-        taglineLabel.text = count(currentMovie.tagline) > 0 ? "\"\(currentMovie.tagline)\"" : ""
-        titleLabel.text = currentMovie.title
-        yearLabel.text = String(currentMovie.year)
-        ratingLabel.text = currentMovie.mpaa
+        taglineLabel.text = currentMovie.tagline.characters.count > 0 ? "\"\(currentMovie.tagline)\"" : ""
+        
+        
+//        titleLabel.numberOfLines = 0
+//        titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+//        titleLabel.autoresizingMask = UIViewAutoresizing.FlexibleHeight
+        
+        titleLabel.attributedText = currentMovie.titleDetailAttributedString()
+        //titleLabel.text = "ajksndvk jsndvkajsn dvkjas nkacjn scka jnskvxjnak sjnv aksjnvnkj snxv"
+//        titleLabel.sizeToFit()
+        
+        
+        
         infoLabel.text = currentMovie.genInformation()
         
         movieImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
         backdropImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
         
-        titleLabel.preferredMaxLayoutWidth = (titleLabel.superview?.frame.width)! - movieImage.frame.width - 20
+        //titleLabel.preferredMaxLayoutWidth = (titleLabel.superview?.frame.width)! - movieImage.frame.width - 20
         
         let rectObj = movieImage.frame
         let textViewOriginY = synopsisLabel.frame.origin.y
         let imgOriginY = rectObj.origin.y + rectObj.height
         if imgOriginY > textViewOriginY {
-            let exclusionRect = UIBezierPath(rect: CGRectMake(5, 0, rectObj.width, imgOriginY - textViewOriginY - 10))
+            let exclusionRect = UIBezierPath(rect: CGRectMake(5, 0, rectObj.width, imgOriginY - textViewOriginY - 20))
             synopsisLabel.textContainer.exclusionPaths = [exclusionRect]
         }
         synopsisLabel.text = currentMovie.synopsis
         
         self.title = "\(currentMovie.title) (\(currentMovie.year))"
-        
-        //self.containerView.frame.size.height = 430
-        
         
     }
     

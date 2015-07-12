@@ -24,15 +24,13 @@ class ActorCollectionViewCell: CollectionViewCell {
         } else {
             self.imageView?.image = actor.image
         }
-
-        
         
         self.nameLabel!.text = actor.name
         self.aboutLabel!.text = actor.character
         
         self.nameLabel!.sizeToFit()
-        self.nameLabel!.frame.size.width = 100
+        self.nameLabel!.frame.size.width = 90
         
-        self.aboutLabel!.frame = CGRectMake(0, self.nameLabel!.maxYinParentFrame(), 100, 15)
+        self.aboutLabel!.frame = CGRectMake(0, self.nameLabel!.maxYinParentFrame(), 90, 15)
     }
 }

@@ -78,7 +78,7 @@ class Movie: NSObject {
     init(json: JSON) {
         super.init()
         
-        for (keyName: String, subJson: JSON) in json {
+        for (keyName, subJson): (String, JSON) in json {
             let keyValue : AnyObject
             if keyName == "linkCount" {
                 keyValue = subJson.int!
@@ -97,7 +97,7 @@ class Movie: NSObject {
     
     // return UIImage based on link
     func movieImageLink(width: Int = 185) -> String {
-        if count(self.img_link) > 0 {
+        if self.img_link.characters.count > 0 {
             return "http://image.tmdb.org/t/p/w\(width)\(self.img_link)"
         } else {
             return GlobalConstants.DefaultMovieImage;
@@ -105,34 +105,20 @@ class Movie: NSObject {
     }
     
     func backdropImageLink(width: Int = 396) -> String {
-        if count(self.backdrop) > 0 {
+        if self.backdrop.characters.count > 0 {
             return "http://image.tmdb.org/t/p/w\(width)\(self.backdrop)"
         } else {
             return GlobalConstants.DefaultBackdropImage
         }
     }
     
-//    // return UIImage based on backdrop
-//    func backdropImage() -> UIImage {
-//        
-//        var urlPath: String
-//        if count(self.backdrop) > 0 {
-//            urlPath =
-//        } else {
-//            urlPath = GlobalConstants.DefaultBackdropImage;
-//        }
-//        let url = NSURL(string: urlPath)
-//        let data = NSData(contentsOfURL: url!)
-//        return UIImage(data: data!)!
-//    }
-    
     func genRuntime() -> String {
         
         if self.runtime < 60 {
             return self.runtime == 0 ? "" : "\(self.runtime) min"
         } else {
-            var h = Int(floor(Double(self.runtime/60)))
-            var m : Int = self.runtime % 60
+            let h = Int(floor(Double(self.runtime/60)))
+            let m : Int = self.runtime % 60
             return "\(h)h" + ((m < 10) ? "0\(m)" : "\(m)")
         }
     }
@@ -150,19 +136,82 @@ class Movie: NSObject {
         let runtime = self.genRuntime()
         let genres = self.genres
         let language = self.language
-        var str = ""
         var elements = [String]()
         
-        if count(runtime) > 0 {
+        if runtime.characters.count > 0 {
             elements.append(runtime)
         }
-        if count(genres) > 0 {
+        if genres.characters.count > 0 {
             elements.append(genres)
         }
-        if count(language) > 0 {
+        if language.characters.count > 0 {
             elements.append(language)
         }
         
         return " - ".join(elements)
     }
+        
+    func titleAttributedString() -> NSMutableAttributedString {
+        let titleAttrs = [NSFontAttributeName: UIFont(name: ".SFUIText-Semibold", size: 17)!]
+        let attributedString = NSMutableAttributedString(string: "\(self.title) ", attributes: titleAttrs)
+        let yearAttrs = [NSFontAttributeName: UIFont.systemFontOfSize(13), NSForegroundColorAttributeName: GlobalConstants.Colors.DarkGrayColor]
+        let yearString = NSMutableAttributedString(string: String(self.year), attributes: yearAttrs)
+        attributedString.appendAttributedString(yearString)
+        attributedString.appendAttributedString(NSAttributedString(string: "\n"))
+        let genresAttr = [NSFontAttributeName: UIFont.systemFontOfSize(12), NSForegroundColorAttributeName: UIColor.grayColor()]
+        let genresString = NSMutableAttributedString(string: self.genres, attributes: genresAttr)
+        attributedString.appendAttributedString(genresString)
+        return attributedString
+    }
+    
+    func titleDetailAttributedString() -> NSMutableAttributedString {
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+
+        
+        
+        let attributedString = NSMutableAttributedString(string: "\(self.title) ", attributes: [NSParagraphStyleAttributeName: paragraphStyle])
+        let yearAttrs = [NSFontAttributeName: UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 13.0)!, NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        let yearString = NSMutableAttributedString(string: " (\(self.year)) ", attributes: yearAttrs)
+        attributedString.appendAttributedString(yearString)
+        let ratingAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(11.0), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        let ratingString = NSMutableAttributedString(string: " \(self.mpaa)", attributes: ratingAttrs)
+        attributedString.appendAttributedString(ratingString)
+
+        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+
+        
+        return attributedString
+    }
+    
+    
+    func mpaaToSprite(rating: String) -> UIImage {
+        var frame = 0
+        switch rating {
+        case "R":
+            frame = 1
+        case "PG":
+            frame = 2
+        case "PG-13":
+            frame = 1
+        case "NC-17":
+            frame = 2
+        default:
+            break
+        }
+    
+        print(frame)
+    
+        return UIImage()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

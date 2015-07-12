@@ -40,14 +40,14 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let item = self.tabBarController?.tabBar.items?[0] as? UITabBarItem {
+        if let item = self.tabBarController?.tabBar.items?[0] {
             item.selectedImage = UIImage(named: "star_selected.png")
         }
         self.tabBarController?.tabBar.tintColor = GlobalConstants.Colors.DefaultColor
         
         
         // bar button
-        var linkTypeButton = UIBarButtonItem(image: UIImage(named: "\(linkType).png"), style: UIBarButtonItemStyle.Plain, target: self, action: "changeLinkType:")
+        let linkTypeButton = UIBarButtonItem(image: UIImage(named: "\(linkType).png"), style: UIBarButtonItemStyle.Plain, target: self, action: "changeLinkType:")
         self.navigationItem.rightBarButtonItem = linkTypeButton
         
         resultsTableController = ResultsTableController()
@@ -72,7 +72,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         // hierarchy until it finds the root view controller or one that defines a presentation context.
         definesPresentationContext = true
         
-        self.tableView.setUpLoadingIndicator(offsetY: 80)
+        self.tableView.setUpLoadingIndicator(80)
         
         fetchMovieDetails()
 
@@ -115,7 +115,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
                 let results = json["movies"]
                 var moviesArr = [Movie]()
                 
-                for (index: String, subJson: JSON) in results {
+                for (_, subJson): (String, JSON) in results {
                     
                     var movie = Movie(json: subJson)
                     movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
@@ -135,9 +135,10 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
                     } else {
                         self.tableView.reloadData()
                     }
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 })
             } else {
-                println("error")
+                print("error")
             }
             
 
@@ -146,7 +147,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     func getFetchURL() -> String {
         if self.searchController.active {
-            let query = self.searchController.searchBar.text.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+            let query = self.searchController.searchBar.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
             return "http://api.readyto.watch/search.php?q=\(query!)&key=\(GlobalConstants.APIKey)"
         } else {
             return "http://api.readyto.watch/popular.php?type=\(linkType)&key=\(GlobalConstants.APIKey)"
@@ -160,7 +161,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         for link in GlobalConstants.Links.LinkTypes {
             let (linkShort, linkLong, linkCaption) = link
             let linkTitle = linkLong + (linkShort == linkType ? " ✓" : "")
-            let linkAction = UIAlertAction(title: linkTitle, style: .Default, handler: {(alert: UIAlertAction!) -> Void in
+            let linkAction = UIAlertAction(title: linkTitle, style: .Default, handler: {(alert: UIAlertAction) -> Void in
                 linkType = linkShort
                 sender.image = UIImage(named: "\(linkShort).png")
                 self.navigationItem.title = "Popular Movies on \(linkCaption)"
@@ -180,7 +181,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         pendingOperations.clearDownloads()
         
-        if count(searchController.searchBar.text) > 0 {
+        if searchController.searchBar.text!.characters.count > 0 {
             fetchMovieDetails()
         }
         
@@ -222,7 +223,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         let detailViewController = MovieViewController.forMovie(selectedMovie)
         
         // Note: Should not be necessary but current iOS 8.0 bug requires it.
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
         
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }

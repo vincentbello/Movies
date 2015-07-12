@@ -14,7 +14,7 @@ class FilterSearchViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let item = self.tabBarController?.tabBar.items?[1] as? UITabBarItem {
+        if let item = self.tabBarController?.tabBar.items?[1] {
             item.selectedImage = UIImage(named: "filter_selected.png")
         }
     }

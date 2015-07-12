@@ -11,14 +11,14 @@ import UIKit
 class CustomSearchController: UISearchController {
     
     
-    override init(searchResultsController: UIViewController!) {
+    override init(searchResultsController: UIViewController?) {
         super.init(searchResultsController: searchResultsController)
         self.searchBar.sizeToFit()
         self.searchBar.tintColor = GlobalConstants.Colors.DefaultColor
         self.searchBar.placeholder = "Search Movies, Actors, and Directors"
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

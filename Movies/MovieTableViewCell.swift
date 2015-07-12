@@ -18,7 +18,7 @@ class MovieTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -28,6 +28,7 @@ class MovieTableViewCell: UITableViewCell {
         self.imageView?.frame = CGRectMake(15, 10, GlobalConstants.TableViewImageWidth, GlobalConstants.TableViewImageHeight)
         self.imageView?.bounds = CGRectMake(15, 10, GlobalConstants.TableViewImageWidth, GlobalConstants.TableViewImageHeight)
         
+        self.textLabel?.numberOfLines = 0
         var textLabelFrame = self.textLabel?.frame
         var detailLabelFrame = self.detailTextLabel?.frame
         textLabelFrame?.origin.x = GlobalConstants.TableViewImageWidth + 25
@@ -57,14 +58,6 @@ class MovieTableViewCell: UITableViewCell {
         linkCountView.addSubview(linkCountBadge)
         linkCountView.addSubview(linkCountCaption)
         return linkCountView
-    }
-    
-    func getAttributedTitleAndYear(title: String, year: Int) -> NSAttributedString {
-        var attributedString = NSMutableAttributedString(string: title)
-        var attrs = [NSFontAttributeName: UIFont.systemFontOfSize(13), NSForegroundColorAttributeName: GlobalConstants.Colors.DarkGrayColor]
-        var yearString = NSMutableAttributedString(string: " \(year)", attributes: attrs)
-        attributedString.appendAttributedString(yearString)
-        return attributedString
     }
 
 }
