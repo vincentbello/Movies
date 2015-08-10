@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Movies.User.init (Movies.User.Type)(json : Movies.JSON) -&gt; Movies.User:User.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "subJson.string">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Movies.MovieViewController.(getLinks (Movies.MovieViewController) -&gt; () -&gt; ()).(closure #1):MovieViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -25,16 +33,10 @@
          contextName = "Movies.CastCollectionView.(startDownloadForRecord (Movies.CastCollectionView) -&gt; (Movies.Actor, indexPath : ObjectiveC.NSIndexPath) -&gt; ()).(closure #1).(closure #1):CastTableViewCell.swift">
       </ContextState>
       <ContextState
-         contextName = "Movies.MovieViewController.setUpViewElements (Movies.MovieViewController)() -&gt; ():MovieViewController.swift">
+         contextName = "ext.Movies.ObjectiveC.UIImageView.imageFromUrl (ObjectiveC.UIImageView)(Swift.String) -&gt; ():Extensions.swift">
          <PersistentStrings>
             <PersistentString
-               value = "infoLabel.frame">
-            </PersistentString>
-            <PersistentString
-               value = "synopsisLabel.frame">
-            </PersistentString>
-            <PersistentString
-               value = "titleLabel.frame">
+               value = "activityIndicator.frame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -50,10 +52,16 @@
          contextName = "Movies.LinksTableViewController.tableView (Movies.LinksTableViewController)(ObjectiveC.UITableView, cellForRowAtIndexPath : ObjectiveC.NSIndexPath) -&gt; ObjectiveC.UITableViewCell:LinksTableViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "ext.Movies.ObjectiveC.UIImageView.imageFromUrl (ObjectiveC.UIImageView)(Swift.String) -&gt; ():Extensions.swift">
+         contextName = "Movies.MovieViewController.setUpViewElements (Movies.MovieViewController)() -&gt; ():MovieViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "activityIndicator.frame">
+               value = "infoLabel.frame">
+            </PersistentString>
+            <PersistentString
+               value = "synopsisLabel.frame">
+            </PersistentString>
+            <PersistentString
+               value = "titleLabel.frame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -68,6 +76,14 @@
          <PersistentStrings>
             <PersistentString
                value = "downloader">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ext.Movies.ObjectiveC.UITableView.setUpLoadingIndicator (ObjectiveC.UITableView)(Swift.String, offsetY : CoreGraphics.CGFloat) -&gt; ():Extensions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.center">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

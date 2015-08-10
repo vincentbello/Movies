@@ -33,6 +33,10 @@ class Movie: NSObject {
     
     var linkCount : Int = 0
     
+    var favorited : Bool = false
+    
+    var alert : Alert = Alert()
+    
     init(id : Int, title : String, year : Int, release_date : String, runtime : Int, genres : String, adult : Int, synopsis : String, tagline : String, director : Int, img_link : String = GlobalConstants.DefaultMovieImage, language : String, mpaa : String, revenue : Int = 0, imdb_id : String, trailer : String, popularity : Double = 0, backdrop : String = GlobalConstants.DefaultBackdropImage) {
         
         self.id = id
@@ -82,10 +86,14 @@ class Movie: NSObject {
             let keyValue : AnyObject
             if keyName == "linkCount" {
                 keyValue = subJson.int!
+            } else if keyName == "favorited" {
+                keyValue = subJson.bool!
+            } else if keyName == "alert" {
+                keyValue = Alert(json: subJson)
             } else {
                 keyValue = subJson.string!
             }
-                        
+            
             // if property exists
             if self.respondsToSelector(NSSelectorFromString(keyName)) {
                 self.setValue(keyValue, forKey: keyName)
@@ -169,8 +177,6 @@ class Movie: NSObject {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
 
-        
-        
         let attributedString = NSMutableAttributedString(string: "\(self.title) ", attributes: [NSParagraphStyleAttributeName: paragraphStyle])
         let yearAttrs = [NSFontAttributeName: UIFont(name: GlobalConstants.Fonts.Main.Regular, size: 13.0)!, NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         let yearString = NSMutableAttributedString(string: " (\(self.year)) ", attributes: yearAttrs)
@@ -185,26 +191,62 @@ class Movie: NSObject {
         return attributedString
     }
     
-    
-    func mpaaToSprite(rating: String) -> UIImage {
-        var frame = 0
-        switch rating {
-        case "R":
-            frame = 1
-        case "PG":
-            frame = 2
-        case "PG-13":
-            frame = 1
-        case "NC-17":
-            frame = 2
-        default:
-            break
-        }
-    
-        print(frame)
-    
-        return UIImage()
+    func addToFavorites(onCompletion: () -> Void) {
+        
+        let user = User.fetch()
+        
+        let body: [String: String] = ["user_id": String(user.id),
+                                      "movie_id": String(self.id),
+                                      "key": GlobalConstants.APIKey,
+                                      "type": "create"]
+        let dataSourceURL = "\(GlobalConstants.BaseUrl)favorites.php"
+        
+        RestAPIManager.sharedInstance.postRequest(dataSourceURL, body: body) { json in
+            if json != nil {
+                // success
+                self.favorited = true
+                onCompletion()
+            }
+        }        
     }
+    
+    func removeFromFavorites(onCompletion: () -> Void) {
+        
+        let user = User.fetch()
+        
+        let body: [String: String] = ["user_id": String(user.id),
+            "movie_id": String(self.id),
+            "key": GlobalConstants.APIKey,
+            "type": "delete"]
+        let dataSourceURL = "\(GlobalConstants.BaseUrl)favorites.php"
+        
+        RestAPIManager.sharedInstance.postRequest(dataSourceURL, body: body) { json in
+            if json != nil {
+                // success
+                self.favorited = false
+                onCompletion()
+            }
+        }
+    }
+    
+    
+//    func mpaaToSprite(rating: String) -> UIImage {
+//        var frame = 0
+//        switch rating {
+//        case "R":
+//            frame = 1
+//        case "PG":
+//            frame = 2
+//        case "PG-13":
+//            frame = 1
+//        case "NC-17":
+//            frame = 2
+//        default:
+//            break
+//        }
+//        
+//        return UIImage()
+//    }
     
     
     

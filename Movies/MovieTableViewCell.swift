@@ -10,9 +10,12 @@ import UIKit
 
 class MovieTableViewCell: UITableViewCell {
     
+    var movie: Movie?
+    
     var linkCountView: UIView = UIView(frame: CGRectMake(0, 0, 30, 43))
     var linkCountBadge = UILabel()
     var linkCountCaption = UILabel(frame: CGRectMake(0, 33, 30, 10))
+    var favoriteButton = UIButton(frame: CGRectMake(15, 52, 30, 30))
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -46,6 +49,16 @@ class MovieTableViewCell: UITableViewCell {
         linkCountCaption.textColor = GlobalConstants.Colors.LightGrayColor
         linkCountCaption.textAlignment = NSTextAlignment.Center
         linkCountCaption.font = UIFont(name: linkCountCaption.font.fontName, size: 12)
+        
+        // add favorite
+        favoriteButton.backgroundColor = UIColor.whiteColor()
+        favoriteButton.layer.borderColor = GlobalConstants.Colors.DefaultColor.CGColor
+        favoriteButton.layer.borderWidth = 1.0
+        favoriteButton.layer.cornerRadius = 3.0
+        
+        self.addSubview(favoriteButton)
+        
+        
     }
     
     func setBadgeAttributes(text: String, backgroundColor: UIColor, caption: String) {

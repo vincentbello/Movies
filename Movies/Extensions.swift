@@ -13,6 +13,56 @@ extension UIView {
     func maxYinParentFrame() -> CGFloat {
         return self.frame.origin.y + self.frame.size.height
     }
+    
+    func setUpLoadingIndicator(message: String = "Loading...", offsetY: CGFloat = 0) {
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
+        let loadingView = UIView(frame: self.frame)
+        loadingView.backgroundColor = UIColor.whiteColor()
+        loadingView.tag = GlobalConstants.LoadingTag
+        
+        let loadingLabel = UILabel()
+        loadingLabel.text = message
+        loadingLabel.textColor = UIColor.darkTextColor()
+        loadingLabel.font = UIFont.systemFontOfSize(15.0)
+        
+        loadingView.addSubview(loadingLabel)
+        
+        loadingLabel.sizeToFit()
+        
+        loadingLabel.center = CGPointMake(self.center.x, self.center.y - offsetY)
+        
+        self.userInteractionEnabled = false
+        
+        self.addSubview(loadingView)
+        
+    }
+    
+    func removeLoadingIndicator() {
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        
+        self.userInteractionEnabled = true
+        
+        for view in self.subviews {
+            if view.tag == GlobalConstants.LoadingTag {
+                view.removeFromSuperview()
+                break
+            }
+        }
+        
+    }
+    
+    func bounceIn() {
+        
+        self.transform = CGAffineTransformMakeScale(0.8, 0.8)
+        self.hidden = false
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: {
+            self.transform = CGAffineTransformMakeScale(1, 1)
+            }, completion: nil)
+    }
 }
 
 extension UIImageView {
@@ -33,7 +83,7 @@ extension UIImageView {
                     self.image = downloadedImage
                     onCompletion?(downloadedImage)
                 } else {
-                    print("error downloading image")
+                    print("error downloading image with url: \(urlString)")
                 }
             }
         }
@@ -101,14 +151,15 @@ extension UITableView {
         self.tableFooterView = footerView
     }
     
-    func setUpLoadingIndicator(offsetY: CGFloat = 0) {
+    override func setUpLoadingIndicator(message: String = "Loading...", offsetY: CGFloat = 0) {
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         let tblViewFooter = UIView(frame: CGRectZero)
+        tblViewFooter.backgroundColor = UIColor.whiteColor()
         
         let loadingLabel = UILabel()
-        loadingLabel.text = "Loading popular movies..."
+        loadingLabel.text = message
         loadingLabel.textColor = UIColor.darkTextColor()
         loadingLabel.font = UIFont.systemFontOfSize(15.0)
         
@@ -117,10 +168,16 @@ extension UITableView {
         loadingLabel.sizeToFit()
         
         loadingLabel.center = CGPointMake(self.center.x, self.center.y - offsetY)
-        
+                
         self.userInteractionEnabled = false
         self.tableFooterView = tblViewFooter
         
+    }
+    
+    override func removeLoadingIndicator() {
+        self.tableFooterView = UIView()
+        self.userInteractionEnabled = true
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
     
 }
@@ -171,4 +228,49 @@ extension UITextField {
         }
     }
 }
+
+
+extension UINavigationController {
+    
+    public func presentTransparentNavigationBar() {
+        navigationBar.setBackgroundImage(UIImage(), forBarMetrics:UIBarMetrics.Default)
+        navigationBar.translucent = true
+        navigationBar.shadowImage = UIImage()
+        setNavigationBarHidden(false, animated:true)
+    }
+    
+    public func hideTransparentNavigationBar() {
+        setNavigationBarHidden(true, animated:false)
+        navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImageForBarMetrics(UIBarMetrics.Default), forBarMetrics:UIBarMetrics.Default)
+        navigationBar.translucent = UINavigationBar.appearance().translucent
+        navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
+    }
+    
+}
+
+extension UIButton {
+    
+    func addActivityIndicator() {
+        let dimension = self.frame.height - 10
+        let frame = CGRectMake(self.frame.width - dimension - 5, 5, dimension, dimension)
+        let activityIndicator = UIActivityIndicatorView(frame: frame)
+        activityIndicator.startAnimating()
+        self.addSubview(activityIndicator)
+    }
+    
+    func removeActivityIndicator() {
+        for view in self.subviews {
+            if view.isKindOfClass(UIActivityIndicatorView) {
+                view.removeFromSuperview()
+                break
+            }
+        }
+    }
+    
+    
+    
+    
+}
+
+
 

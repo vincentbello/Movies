@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 struct GlobalConstants {
+    static let BaseUrl = "http://api.readyto.watch/"
     static let APIKey = "09e83e9d105e24932aabefa1092f1123"
     
     static let TableViewImageHeight = CGFloat(72)
@@ -20,6 +21,11 @@ struct GlobalConstants {
     static let DefaultBackdropImage = "http://readyto.watch/images/no_backdrop.png"
     
     static let StoryboardName = "Main"
+    
+    static let DismissRatio = CGFloat(0.1)
+    static let DismissVelocity = CGFloat(1500)
+    
+    static let LoadingTag = 5
     
     struct URLSchemes {
         static let Amazon = "aiv://"
@@ -71,6 +77,7 @@ struct GlobalConstants {
     struct Identifiers {
         static let Base = "Cell"
         static let Link = "LinkCell"
+        static let Alert = "AlertCell"
         
         struct CastCollection {
             static let Container = "CastContainer"

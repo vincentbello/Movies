@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieViewController: UIViewController {
+class MovieViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: Properties
     
@@ -16,6 +16,7 @@ class MovieViewController: UIViewController {
 //    
 //    @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var backdropImage: UIImageView!
     @IBOutlet weak var taglineLabel: UILabel!
@@ -26,15 +27,64 @@ class MovieViewController: UIViewController {
     
     @IBOutlet weak var containerView: UIView!
     
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var unfavoriteButton: UIButton!
 
     @IBOutlet weak var contentViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var informationViewHeightConstraint: NSLayoutConstraint!
     
 //    @IBOutlet weak var linksContainer: UIView!
-    
     var currentMovie: Movie!
     var linksTableViewController = LinksTableViewController()
+    
+    @IBAction func addToFavorites(sender: AnyObject) {
+        
+        if User.isLoggedIn() {
+            self.currentMovie.addToFavorites() {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.favoriteButton.hidden = true
+                    self.unfavoriteButton.bounceIn()
+                }
+            }
+        } else {
+            // UIAlertController
+            let alertController = UIAlertController(title: "Adding to favorites", message: "You must be logged in to favorite movies.", preferredStyle: .Alert)
+            let dismissAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+            alertController.addAction(dismissAction)
+            let logInAction = UIAlertAction(title: "Log in", style: .Destructive) { (action) in
+                let loginVC = LogInViewController.forLastUsername()
+                self.presentViewController(loginVC, animated: true, completion: nil)
+            }
+            alertController.addAction(logInAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func removeFromFavorites(sender: AnyObject) {
+        
+        // UIAlertController
+        let alertController = UIAlertController(title: "Removing from favorites", message: "Are you sure you want to remove \"\(currentMovie.title)\" from your favorites?", preferredStyle: .Alert)
+        let dismissAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+        alertController.addAction(dismissAction)
+        let removeAction = UIAlertAction(title: "Remove", style: .Destructive) { (action) in
+            
+            self.currentMovie.removeFromFavorites() {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.favoriteButton.hidden = false
+                    self.unfavoriteButton.hidden = true
+                }
+            }
+            
+        }
+        alertController.addAction(removeAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+
+    }
+    
+    
     
     // MARK: Factory Methods
     
@@ -52,6 +102,7 @@ class MovieViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        //self.navigationController?.hidesBarsOnSwipe = true
         
         setUpViewElements()        
     }
@@ -67,23 +118,12 @@ class MovieViewController: UIViewController {
         }
         taglineLabel.text = currentMovie.tagline.characters.count > 0 ? "\"\(currentMovie.tagline)\"" : ""
         
-        
-//        titleLabel.numberOfLines = 0
-//        titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-//        titleLabel.autoresizingMask = UIViewAutoresizing.FlexibleHeight
-        
         titleLabel.attributedText = currentMovie.titleDetailAttributedString()
-        //titleLabel.text = "ajksndvk jsndvkajsn dvkjas nkacjn scka jnskvxjnak sjnv aksjnvnkj snxv"
-//        titleLabel.sizeToFit()
-        
-        
         
         infoLabel.text = currentMovie.genInformation()
         
         movieImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
         backdropImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "goToImageView:"))
-        
-        //titleLabel.preferredMaxLayoutWidth = (titleLabel.superview?.frame.width)! - movieImage.frame.width - 20
         
         let rectObj = movieImage.frame
         let textViewOriginY = synopsisLabel.frame.origin.y
@@ -95,6 +135,11 @@ class MovieViewController: UIViewController {
         synopsisLabel.text = currentMovie.synopsis
         
         self.title = "\(currentMovie.title) (\(currentMovie.year))"
+        
+        if currentMovie.favorited {
+            favoriteButton.hidden = true
+            unfavoriteButton.hidden = false
+        }
         
     }
     
@@ -139,81 +184,31 @@ class MovieViewController: UIViewController {
         self.presentViewController(imageViewController, animated: true, completion: nil)
         
     }
-        
-        
-        
-        
-//        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-//            if data != nil {
-//                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
-//                
-//                let linksArray = jsonResult["links"] as! NSArray
-//                var linksArr = [LinkObject]()
-//                for linkObj in linksArray {
-//                    let linkDictionary = linkObj as! NSDictionary
-//                    var link = LinkObject(JSONDictionary: linkDictionary)
-//                    linksArr.append(link)
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            
+            let scale = min(2, 1 - scrollView.contentOffset.y/200)
+            self.backdropImage.transform = CGAffineTransformMakeScale(scale, scale)
+            self.backdropImage.frame.origin.y = scrollView.contentOffset.y
+        }
+//            if scrollView.panGestureRecognizer.translationInView(scrollView.superview).y > 0 {
+//                if self.navbarHidden == true {
+//                    self.navbarHidden = false
 //                }
-//                self.linksTableViewController.tableView.delegate = self.linksTableViewController
-//                self.linksTableViewController.links = linksArr
-//                self.linksTableViewController.tableView.reloadData()
-//                
-//                dispatch_async(dispatch_get_main_queue()) {
-//                    let originalHeight = self.linksContainer.frame.size.height
-//                    let tableSize = self.linksTableViewController.tableView.contentSize
-//                    
-//                    self.linksTableViewController.tableView.frame = CGRectMake(0, 0, tableSize.width, tableSize.height)
-//                    self.linksContainer.frame.size = tableSize
-//                    self.linksContainer.addSubview(self.linksTableViewController.tableView)
-//                    
-//                    let oldHeight = self.scrollView.contentSize.height
-//                    let addedHeight = oldHeight + tableSize.height - originalHeight
-//                    
-//                    self.scrollView.contentSize.height = addedHeight
-//                    self.scrollView.frame.size.height = addedHeight
-//                    self.scrollView.setNeedsDisplay()
+//
+//            } else {
+//                if self.navbarHidden == false && scrollView.contentOffset.y > self.navigationController?.navigationBar.frame.height {
+//                    self.navbarHidden = true
 //                }
-//            }
-//            
-//            if error != nil {
-//                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-//                alert.show()
-//            }
-//            
+//            } 
 //        }
         
-        /*
-        var dataSourceURL = NSURL(string: getFetchURL())
-        let request = NSURLRequest(URL: dataSourceURL!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { response, data, error in
-            if data != nil {
-                let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
-                
-                let moviesArray = jsonResult["movies"] as! NSArray
-                var moviesArr = [Movie]()
-                for mov in moviesArray {
-                    let movDictionary = mov as! NSDictionary
-                    var movie = Movie(JSONDictionary: movDictionary)
-                    
-                    movie = movie.findMovieInArray(Array(Set(self.movies).union(Set(self.resultsTableController.searchedMovies))))
-                    moviesArr.append(movie)
-                }
-                if self.searchController.active {
-                    self.resultsTableController.searchedMovies = moviesArr
-                    self.resultsTableController.tableView.reloadData()
-                } else {
-                    self.movies = moviesArr
-                    self.tableView.reloadData()
-                }
-            }
-            
-            if error != nil {
-                let alert = UIAlertView(title: "Oops!", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-                alert.show()
-            }
-            
-        }
-        */
+    }
+    
+    
+    
+    
         
     
     // MARK: - Navigation

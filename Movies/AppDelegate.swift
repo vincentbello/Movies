@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITextField.appearance().substituteFontName = GlobalConstants.Fonts.Main.Regular
 //        UITextField.appearance().substituteFontNameBold = GlobalConstants.Fonts.Main.Bold
         
+        UINavigationBar.appearance().translucent = true
+        
         return true
     }
 

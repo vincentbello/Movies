@@ -19,12 +19,18 @@ class ResultsTableController: BaseTableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view
         self.navigationController?.navigationBar.barTintColor = GlobalConstants.Colors.NavigationBarColor
+        self.tableView.separatorInset = UIEdgeInsetsZero
+
     }
     
     // MARK: UITableViewDataSource
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchedMovies.count
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

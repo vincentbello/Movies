@@ -19,11 +19,9 @@ class ImageViewController: UIViewController {
     var captionShown = true
     var isMovieImage = true
     
-    @IBAction func doneButtonClicked(sender: AnyObject) {
-        self.dismissController()
-    }
+    var animator: UIDynamicAnimator!
     
-    @IBAction func swipedDown(sender: AnyObject) {
+    @IBAction func doneButtonClicked(sender: AnyObject) {
         self.dismissController()
     }
     
@@ -98,6 +96,9 @@ class ImageViewController: UIViewController {
         NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "showHideCaption", userInfo: nil, repeats: false)
         
         self.modalPresentationCapturesStatusBarAppearance = true
+        
+        self.animator = UIDynamicAnimator(referenceView: self.view)
+        
 
     }
 
@@ -129,6 +130,53 @@ class ImageViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         print("this is executed!")
         return true
+    }
+    
+    
+    @IBAction func swipeDown(recognizer: UIPanGestureRecognizer) {
+        
+        let translation = recognizer.translationInView(self.view)
+        if let view = recognizer.view {
+            view.frame.origin.y = view.frame.origin.y + translation.y
+            
+            let ratio = view.frame.origin.y / view.frame.height
+            
+            if recognizer.state == UIGestureRecognizerState.Ended {
+                let velocity = recognizer.velocityInView(view).y
+                // compute ratio
+                if ratio > GlobalConstants.DismissRatio && imageView.transform.a == 1.0 {
+                    
+                    UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: velocity, options: UIViewAnimationOptions.CurveLinear, animations: {
+                            view.frame.origin.y = view.frame.height
+                        }, completion: { finished in
+                            self.dismissViewControllerAnimated(false, completion: nil)
+                            //self.dismissController()
+                    })
+
+                } else {
+                    
+                    UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                            view.frame.origin.y = 0
+                        }, completion: nil)
+                }
+            }
+            
+            
+        }
+        recognizer.setTranslation(CGPointZero, inView: self.view)
+        
+
+        
+//        let gravityBehavior = UIGravityBehavior(items: [self.view])
+//        self.animator.addBehavior(gravityBehavior)
+//        
+//        let collisionBehavior = UICollisionBehavior(items: [self.view])
+//        collisionBehavior.translatesReferenceBoundsIntoBoundary = true
+//        self.animator.addBehavior(collisionBehavior)
+        
+        
+        // self.dismissController()
+
     }
     
 

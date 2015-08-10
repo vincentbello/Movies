@@ -24,6 +24,14 @@ class RestAPIManager: NSObject {
         })
     }
     
+    func postRequest(dataSourceURL: String, body: [String: String], onCompletion: (JSON) -> Void) {
+        let route = dataSourceURL
+        
+        makeHTTPPostRequest(route, body: body, onCompletion: { json, err in
+            onCompletion(json as JSON)
+        })
+    }
+    
     func makeHTTPGetRequest(path: String, onCompletion: ServiceResponse) {
         let request = NSMutableURLRequest(URL: NSURL(string: path)!)
         
@@ -38,25 +46,32 @@ class RestAPIManager: NSObject {
     }
     
     
-    func makeHTTPPostRequest(path: String, body: [String: AnyObject], onCompletion: ServiceResponse) {
-        var err: NSError?
+    func makeHTTPPostRequest(path: String, body: [String: String], onCompletion: ServiceResponse) {
         let request = NSMutableURLRequest(URL: NSURL(string: path)!)
         
         // Set the method to POST
         request.HTTPMethod = "POST"
         
-        do {
-            // Set the POST body for the request
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(body, options: [])
-        } catch let error as NSError {
-            err = error
-            request.HTTPBody = nil
+        var params = [String]()
+        for (key, val) in body {
+            params.append("\(key)=\(val)")
         }
-        let session = NSURLSession.sharedSession()
+        let bodyData = "&".join(params)
         
+        request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding)
+//
+//        do {
+//            // Set the POST body for the request
+////            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(body, options: [])
+//        } catch let error as NSError {
+//            err = error
+//            request.HTTPBody = nil
+//        }
+//
+        let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
             let json: JSON = JSON(data: data!)
-            onCompletion(json, err)
+            onCompletion(json, error)
         })
         
         task!.resume()

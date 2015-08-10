@@ -98,6 +98,8 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     func configureElements() {
+        
+        NSOperationQueue.mainQueue().cancelAllOperations()
                 
         if self.imageView == nil {
             self.imageView = UIImageView(frame: CGRectMake(5, 5, 80, 120))

@@ -35,7 +35,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     
     var restoredState = SearchControllerRestorableState()
     
-    
+//    lazy var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +45,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         }
         self.tabBarController?.tabBar.tintColor = GlobalConstants.Colors.DefaultColor
         
+        self.tableView.separatorInset = UIEdgeInsetsZero
         
         // bar button
         let linkTypeButton = UIBarButtonItem(image: UIImage(named: "\(linkType).png"), style: UIBarButtonItemStyle.Plain, target: self, action: "changeLinkType:")
@@ -66,13 +67,21 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
 
             return controller
         })()
+        
+        self.refreshControl = ({
+            let control = UIRefreshControl()
+            control.attributedTitle = NSAttributedString(string: "Pull to refresh")
+            control.addTarget(self, action: "fetchMovieDetails", forControlEvents: UIControlEvents.ValueChanged)
+            self.tableView.addSubview(control)
+            return control
+        })()
 
         // Search is now just presenting a view controller. As such, normal view controller
         // presentation semantics apply. Namely that presentation will walk up the view controller
         // hierarchy until it finds the root view controller or one that defines a presentation context.
         definesPresentationContext = true
         
-        self.tableView.setUpLoadingIndicator(80)
+        self.tableView.setUpLoadingIndicator("Loading popular movies...", offsetY: 80)
         
         fetchMovieDetails()
 
@@ -136,6 +145,7 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
                         self.tableView.reloadData()
                     }
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    self.refreshControl!.endRefreshing()
                 })
             } else {
                 print("error")
@@ -148,9 +158,9 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
     func getFetchURL() -> String {
         if self.searchController.active {
             let query = self.searchController.searchBar.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
-            return "http://api.readyto.watch/search.php?q=\(query!)&key=\(GlobalConstants.APIKey)"
+            return "http://api.readyto.watch/search.php?q=\(query!)&key=\(GlobalConstants.APIKey)" + (User.isLoggedIn() ? "&user_id=\(User.fetch().id)" : "")
         } else {
-            return "http://api.readyto.watch/popular.php?type=\(linkType)&key=\(GlobalConstants.APIKey)"
+            return "http://api.readyto.watch/popular.php?type=\(linkType)&key=\(GlobalConstants.APIKey)" + (User.isLoggedIn() ? "&user_id=\(User.fetch().id)" : "")
         }
     }
     
@@ -195,11 +205,15 @@ class PopularTableViewController: BaseTableViewController, UISearchBarDelegate, 
         return movies.count
     }
     
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Base, forIndexPath: indexPath) as! MovieTableViewCell
         let movie = movies[indexPath.row]
-        
+
         configureCell(cell, forMovie: movie, indexPath: indexPath)
         
         return cell

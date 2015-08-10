@@ -45,7 +45,6 @@ class LinksTableViewController: UITableViewController {
         self.tableView.registerClass(RelatedTableViewCell.self, forCellReuseIdentifier: GlobalConstants.Identifiers.RelatedCollection.Container)
         
         self.contentOffsetDictionary = NSMutableDictionary()
-
         
     }
     
@@ -330,6 +329,7 @@ extension LinksTableViewController: UICollectionViewDataSource, UICollectionView
             let cell: ActorCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(GlobalConstants.Identifiers.CastCollection.Cell, forIndexPath: indexPath) as! ActorCollectionViewCell
             
             let actor = self.cast[indexPath.row]
+            
             cell.configure(forActor: actor)
             
             return cell
@@ -356,9 +356,9 @@ extension LinksTableViewController: UICollectionViewDataSource, UICollectionView
             // Set up the detail view controller to show.
             let detailViewController = ActorViewController.forActor(selectedActor)
             
-            collectionView.deselectItemAtIndexPath(indexPath, animated: false)
-            
             self.navigationController?.pushViewController(detailViewController, animated: true)
+            
+            collectionView.deselectItemAtIndexPath(indexPath, animated: false)
             
         case 2:
             let selectedMovie = self.relatedMovies[indexPath.item]
@@ -370,18 +370,23 @@ extension LinksTableViewController: UICollectionViewDataSource, UICollectionView
             //collectionView.deselectRowAtIndexPath(collectionView.indexPathsForSelectedItems()!, animated: false)
             
             self.navigationController?.pushViewController(detailViewController, animated: true)
+            
+            collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+
         default:
             break
         }
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        if !scrollView.isKindOfClass(UICollectionView) {
-            return
+        if scrollView.isKindOfClass(UICollectionView) {
+            let horizontalOffset: CGFloat = scrollView.contentOffset.x
+            let collectionView: UICollectionView = scrollView as! UICollectionView
+            self.contentOffsetDictionary.setValue(horizontalOffset, forKey: collectionView.tag.description)
+        } else {
+            print("scrolling")
         }
-        let horizontalOffset: CGFloat = scrollView.contentOffset.x
-        let collectionView: UICollectionView = scrollView as! UICollectionView
-        self.contentOffsetDictionary.setValue(horizontalOffset, forKey: collectionView.tag.description)
+        
     }
     
 }
