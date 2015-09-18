@@ -40,7 +40,6 @@ class Alert: NSObject {
                 self.setValue(keyValue, forKey: keyName)
             }
         }
-    }
-    
+    }    
     
 }

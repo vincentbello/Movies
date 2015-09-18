@@ -105,7 +105,7 @@ class Movie: NSObject {
     
     // return UIImage based on link
     func movieImageLink(width: Int = 185) -> String {
-        if self.img_link.characters.count > 0 {
+        if count(self.img_link) > 0 {
             return "http://image.tmdb.org/t/p/w\(width)\(self.img_link)"
         } else {
             return GlobalConstants.DefaultMovieImage;
@@ -113,7 +113,7 @@ class Movie: NSObject {
     }
     
     func backdropImageLink(width: Int = 396) -> String {
-        if self.backdrop.characters.count > 0 {
+        if count(self.backdrop) > 0 {
             return "http://image.tmdb.org/t/p/w\(width)\(self.backdrop)"
         } else {
             return GlobalConstants.DefaultBackdropImage
@@ -146,13 +146,13 @@ class Movie: NSObject {
         let language = self.language
         var elements = [String]()
         
-        if runtime.characters.count > 0 {
+        if count(runtime) > 0 {
             elements.append(runtime)
         }
-        if genres.characters.count > 0 {
+        if count(genres) > 0 {
             elements.append(genres)
         }
-        if language.characters.count > 0 {
+        if count(language) > 0 {
             elements.append(language)
         }
         
@@ -160,7 +160,7 @@ class Movie: NSObject {
     }
         
     func titleAttributedString() -> NSMutableAttributedString {
-        let titleAttrs = [NSFontAttributeName: UIFont(name: ".SFUIText-Semibold", size: 17)!]
+        let titleAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17)]
         let attributedString = NSMutableAttributedString(string: "\(self.title) ", attributes: titleAttrs)
         let yearAttrs = [NSFontAttributeName: UIFont.systemFontOfSize(13), NSForegroundColorAttributeName: GlobalConstants.Colors.DarkGrayColor]
         let yearString = NSMutableAttributedString(string: String(self.year), attributes: yearAttrs)

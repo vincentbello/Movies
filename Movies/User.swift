@@ -63,7 +63,7 @@ class User: NSObject, NSCoding {
         aCoder.encodeInteger(active, forKey: "active")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         self.id = aDecoder.decodeIntegerForKey("id")
         self.username = aDecoder.decodeObjectForKey("username") as! String
         self.password = aDecoder.decodeObjectForKey("password") as! String
@@ -84,7 +84,7 @@ class User: NSObject, NSCoding {
     
 
     func fullName() -> String {
-        if self.fb_fname.characters.count > 0 && self.fb_lname.characters.count > 0 {
+        if count(self.fb_fname) > 0 && count(self.fb_lname) > 0 {
             return "\(self.fb_fname) \(self.fb_lname)"
         } else {
             return self.username
@@ -92,7 +92,7 @@ class User: NSObject, NSCoding {
     }
     
     func hasFB() -> Bool {
-        return self.fb_id.characters.count > 0
+        return count(self.fb_id) > 0
     }
     
     func displayName() -> String {
@@ -100,7 +100,7 @@ class User: NSObject, NSCoding {
     }
     
     func imageLink() -> String {
-        if self.image.characters.count > 0 {
+        if count(self.image) > 0 {
             if self.image.rangeOfString("//graph.facebook.com") != nil {
                 return "http:\(self.image)?width=200"
             } else {

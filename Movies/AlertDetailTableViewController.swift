@@ -16,7 +16,21 @@ class AlertDetailTableViewController: BaseTableViewController {
     
     var userID: Int = 0
     
-    let cellLabels = ["Any", "iTunes Store", "Amazon Instant Video", "Netflix", "YouTube Movies", "Crackle", "Google Play Store"]
+    let cellLabels = [("Any", "any"),
+                    ("iTunes Store", "itunes"),
+                    ("Amazon Instant Video", "amazon"),
+                    ("Netflix", "netflix"),
+                    ("YouTube Movies", "youtube"),
+                    ("Crackle", "crackle"),
+                    ("Google Play Store", "google_play")]
+    
+    class func forMovie(movie: Movie) -> AlertDetailTableViewController {
+        let storyboard = UIStoryboard(name: GlobalConstants.StoryboardName, bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("AlertDetailTableViewController") as! AlertDetailTableViewController
+        viewController.currentMovie = movie
+        
+        return viewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,9 +55,18 @@ class AlertDetailTableViewController: BaseTableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Alert, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(GlobalConstants.Identifiers.Alert, forIndexPath: indexPath) as! UITableViewCell
         
-        cell.textLabel?.text = cellLabels[indexPath.row]
+        let (longForm, shortForm) = cellLabels[indexPath.row]
+        let alertValue = currentMovie.alert.valueForKey(shortForm) as! Bool
+        cell.textLabel?.text = longForm
+        if let alertSwitch = cell.accessoryView as? UISwitch {
+            alertSwitch.on = alertValue
+        } else {
+            let alertSwitch = UISwitch()
+            alertSwitch.on = alertValue
+            cell.accessoryView = alertSwitch
+        }
 //        cell.detailTextLabel
         
         return cell
@@ -54,7 +77,7 @@ class AlertDetailTableViewController: BaseTableViewController {
 //    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
     }
     
     

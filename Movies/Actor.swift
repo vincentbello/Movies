@@ -47,7 +47,7 @@ class Actor: NSObject {
     
     // return UIImage based on link
     func actorImageLink() -> String {
-        if self.photo.characters.count > 0 {
+        if count(self.photo) > 0 {
             return "http://image.tmdb.org/t/p/w185\(self.photo)"
         } else {
             return GlobalConstants.DefaultActorImage;
@@ -55,7 +55,7 @@ class Actor: NSObject {
     }
     
     func backdropImageLink(width: Int = 396) -> String {
-        if self.backdrop.characters.count > 0 {
+        if count(self.backdrop) > 0 {
             return "http://image.tmdb.org/t/p/w\(width)\(self.backdrop)"
         } else {
             return GlobalConstants.DefaultBackdropImage

@@ -44,11 +44,11 @@ class ProfileViewController: BaseTableViewController, CommunicationControllerLog
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let item = self.tabBarController?.tabBar.items?[2] {
+        if let item = self.tabBarController?.tabBar.items?[2] as? UITabBarItem {
             item.selectedImage = UIImage(named: "user_selected.png")
         }
 
-        self.navigationController?.view.setUpLoadingIndicator("Loading user...")
+        self.navigationController?.view.setUpLoadingIndicator(message: "Loading user...")
         //self.setUpLoadingIndicator("Loading popular movies...", offsetY: 80)
 
     }
@@ -67,6 +67,10 @@ class ProfileViewController: BaseTableViewController, CommunicationControllerLog
     }
     
     func setUpElements() {
+        
+        self.profileImageView.layer.borderWidth = 3
+        self.profileImageView.layer.borderColor = GlobalConstants.Colors.DefaultColor.CGColor
+        self.profileImageView.layer.cornerRadius = 50
 
         self.profileImageView.imageFromUrl(currentUser.imageLink())
         self.nameLabel.text = currentUser.fullName()

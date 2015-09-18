@@ -179,7 +179,7 @@ class LinksTableViewController: UITableViewController {
             cell.textLabel?.text = linkLong
             
             // Configure the cell...
-            if link.link.characters.count > 0 {
+            if count(link.link) > 0 {
                 cell.imageView?.image = UIImage(named: "\(linkShort)_color.png")
 //                cell.textLabel?.makeBold()
                 cell.detailTextLabel?.textColor = UIColor.blackColor()
@@ -254,7 +254,7 @@ class LinksTableViewController: UITableViewController {
         
         let link = links[indexPath.row]
         
-        if link.link.characters.count > 0 {
+        if count(link.link) > 0 {
             UIApplication.tryURL(link.app_link())
         }
         

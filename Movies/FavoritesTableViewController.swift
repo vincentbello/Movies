@@ -21,7 +21,7 @@ class FavoritesTableViewController: BaseTableViewController {
         
         self.tableView.separatorInset = UIEdgeInsetsZero
         
-        self.tableView.setUpLoadingIndicator("Loading favorite movies...", offsetY: 80)
+        self.tableView.setUpLoadingIndicator(message: "Loading favorite movies...", offsetY: 80)
         
         self.refreshControl = ({
             let control = UIRefreshControl()
@@ -110,7 +110,7 @@ class FavoritesTableViewController: BaseTableViewController {
         let detailViewController = MovieViewController.forMovie(selectedMovie)
         
         // Note: Should not be necessary but current iOS 8.0 bug requires it.
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
         
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }

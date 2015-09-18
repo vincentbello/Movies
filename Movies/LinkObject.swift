@@ -60,29 +60,29 @@ class LinkObject: NSObject {
         let hdAttrs = [NSFontAttributeName: UIFont.boldSystemFontOfSize(8.5), NSForegroundColorAttributeName: GlobalConstants.Colors.DefaultColor, NSBaselineOffsetAttributeName: 6]
         switch (self.type) {
         case "itunes", "amazon", "google_play":
-            if (self.rent.characters.count == 0 && self.buy.characters.count == 0) {
+            if (count(self.rent) == 0 && count(self.buy) == 0) {
                 attrStr.appendString("Follow link")
             } else {
-                if (self.rent.characters.count > 0) {
+                if (count(self.rent) > 0) {
                     var rentComponents = self.rent.componentsSeparatedByString("|")
-                    if rentComponents[0].characters.count > 0 {
+                    if count(rentComponents[0]) > 0 {
                         attrStr.appendString("Rent: ")
                         attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(rentComponents[0])\n", attributes: boldAttrs))
-                        if rentComponents[1].characters.count > 0 {
+                        if count(rentComponents[1]) > 0 {
                             attrStr.appendString("Rent")
                             attrStr.appendAttributedString(NSMutableAttributedString(string: "HD", attributes: hdAttrs))
                             attrStr.appendString(": ")
                             attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(rentComponents[1])", attributes: boldAttrs))
-                            if self.buy.characters.count > 1 { attrStr.appendString("\n") }
+                            if count(self.buy) > 1 { attrStr.appendString("\n") }
                         }
                     }
                 }
-                if (self.buy.characters.count > 0) {
+                if (count(self.buy) > 0) {
                     var buyComponents = self.buy.componentsSeparatedByString("|")
-                    if buyComponents[0].characters.count > 0 {
+                    if count(buyComponents[0]) > 0 {
                         attrStr.appendString("Buy: ")
                         attrStr.appendAttributedString(NSMutableAttributedString(string: "$\(buyComponents[0])\n", attributes: boldAttrs))
-                        if buyComponents[1].characters.count > 0 {
+                        if count(buyComponents[1]) > 0 {
                             attrStr.appendString("Buy")
                             attrStr.appendAttributedString(NSMutableAttributedString(string: "HD", attributes: hdAttrs))
                             attrStr.appendString(": ")
@@ -109,7 +109,7 @@ class LinkObject: NSObject {
         
         switch self.type {
         case "itunes":
-            let appSpecific = self.itunesId.characters.count > 0 ? GlobalConstants.Links.ItunesPrefix + self.itunesId : self.link
+            let appSpecific = count(self.itunesId) > 0 ? GlobalConstants.Links.ItunesPrefix + self.itunesId : self.link
             return [appSpecific]
         case "amazon", "netflix":
             let scheme = self.type == "amazon" ? GlobalConstants.URLSchemes.Amazon : GlobalConstants.URLSchemes.Netflix

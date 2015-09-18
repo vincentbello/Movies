@@ -79,11 +79,11 @@ class ImageViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         if isMovieImage {
-            imageView.imageFromUrl(currentMovie.movieImageLink(780))
+            imageView.imageFromUrl(currentMovie.movieImageLink(width: 780))
         } else {
             imageView.hidden = true
             
-            backdropImageView.imageFromUrl(currentMovie.backdropImageLink(780))
+            backdropImageView.imageFromUrl(currentMovie.backdropImageLink(width: 780))
             backdropImageView.hidden = false
         }
         

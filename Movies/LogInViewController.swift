@@ -26,7 +26,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginClicked(sender: AnyObject) {
         
-        if usernameField.text?.characters.count > 0 && passwordField.text?.characters.count > 0 {
+        if count(usernameField.text) > 0 && count(passwordField.text) > 0 {
             
             let button = sender as! UIButton
             button.addActivityIndicator()
@@ -79,7 +79,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func continueWithoutLogin(sender: AnyObject) {
         
-        let popularVC = self.storyboard?.instantiateInitialViewController()
+        let popularVC = self.storyboard?.instantiateInitialViewController() as? PopularTableViewController
         self.presentViewController(popularVC!, animated: true, completion: nil)
         
         
@@ -90,7 +90,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let item = self.tabBarController?.tabBar.items?[2] {
+        if let item = self.tabBarController?.tabBar.items?[2] as? UITabBarItem {
             item.selectedImage = UIImage(named: "user_selected.png")
         }
         
@@ -113,11 +113,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
-    
-    
 
     /*
     // MARK: - Navigation

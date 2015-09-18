@@ -29,7 +29,7 @@ class AlertsTableViewController: BaseTableViewController {
         
         self.tableView.separatorInset = UIEdgeInsetsZero
 
-        self.tableView.setUpLoadingIndicator("Loading alerts...", offsetY: 80)
+        self.tableView.setUpLoadingIndicator(message: "Loading alerts...", offsetY: 80)
         
         self.refreshControl = ({
             let control = UIRefreshControl()
@@ -106,6 +106,20 @@ class AlertsTableViewController: BaseTableViewController {
         return GlobalConstants.TableViewImageHeight + 20
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var selectedMovie: Movie
+        
+        selectedMovie = movies[indexPath.row]
+        
+        // set up the detail view controller to show
+        let detailViewController = AlertDetailTableViewController.forMovie(selectedMovie)
+        
+        // Note: should not be necessary byt current iOS 8.0 bug requires it.
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
 //    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        var selectedMovie: Movie
 //        
@@ -126,7 +140,8 @@ class AlertsTableViewController: BaseTableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
         override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
             
-            let indexPath = self.tableView.indexPathForSelectedRow!
+            println("going to segue")
+            let indexPath = self.tableView.indexPathForSelectedRow()!
             let selectedMovie = movies[indexPath.row]
             // Get the new view controller using [segue destinationViewController].
             let alertScene = segue.destinationViewController as! AlertDetailTableViewController

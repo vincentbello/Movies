@@ -116,7 +116,7 @@ class MovieViewController: UIViewController, UIScrollViewDelegate {
         } else {
             movieImage.imageFromUrl(currentMovie.movieImageLink())
         }
-        taglineLabel.text = currentMovie.tagline.characters.count > 0 ? "\"\(currentMovie.tagline)\"" : ""
+        taglineLabel.text = count(currentMovie.tagline) > 0 ? "\"\(currentMovie.tagline)\"" : ""
         
         titleLabel.attributedText = currentMovie.titleDetailAttributedString()
         

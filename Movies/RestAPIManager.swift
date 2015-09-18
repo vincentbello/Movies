@@ -42,7 +42,7 @@ class RestAPIManager: NSObject {
             onCompletion(json, error)
         })
         
-        task!.resume()
+        task.resume()
     }
     
     
@@ -74,7 +74,7 @@ class RestAPIManager: NSObject {
             onCompletion(json, error)
         })
         
-        task!.resume()
+        task.resume()
     }
     
     

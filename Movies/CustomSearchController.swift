@@ -18,7 +18,7 @@ class CustomSearchController: UISearchController {
         self.searchBar.placeholder = "Search Movies, Actors, and Directors"
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
